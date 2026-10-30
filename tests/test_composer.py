@@ -28,7 +28,7 @@ def test_composer_builds_citation_from_selected_source(monkeypatch):
     monkeypatch.setattr(bounded_composer.ollama, "chat", fake_chat)
     answer = bounded_composer.compose_answer("What is tested?", EVIDENCE, "test-model")
     assert answer == "The test uses a blood sample [diagnostic.pdf, page 4]."
-    assert captured["format"]["properties"]["claims"]["maxItems"] == 4
+    assert captured["format"]["properties"]["claims"]["maxItems"] == 5
 
 
 def test_composer_rejects_unretrieved_source_and_uncited_prose():
@@ -55,7 +55,7 @@ def test_composer_limits_model_output_to_four_sourced_claims():
 
 
 def test_specific_question_uses_shorter_claim_budget():
-    assert bounded_composer._claim_limit("How should guidance be adapted?") == 2
+    assert bounded_composer._claim_limit("How should guidance be adapted?") == 3
     assert bounded_composer._claim_limit("How are cases diagnosed and treated?") == 4
 
 
@@ -66,3 +66,9 @@ def test_composer_drops_duplicate_claims():
     ]
     answer = _from_model_json(json.dumps({"claims": claims}), EVIDENCE)
     assert answer.count("[diagnostic.pdf, page 4]") == 1
+
+
+def test_composer_cites_each_sentence_from_a_model_claim():
+    claim = {"text": "First fact. Second fact", "source_id": 1}
+    answer = _from_model_json(json.dumps({"claims": [claim]}), EVIDENCE)
+    assert answer.count("[diagnostic.pdf, page 4]") == 2

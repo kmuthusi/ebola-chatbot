@@ -19,7 +19,33 @@ def _simple_relevance_score(candidate: Dict[str, Any], terms: set[str], frequenc
     page_bonus = 0.05 if candidate.get("page") else 0.0
     words = _words(candidate.get("text", ""))
     lexical_bonus = min(0.20, sum(0.08 * math.log((total + 1) / (frequency[term] + 1)) for term in terms & words))
-    return s + page_bonus + lexical_bonus
+    content = re.sub(r"\s+", " ", candidate.get("text", "").casefold())
+    # An explicit recommendation or key point is stronger evidence than an
+    # article title, research agenda, or evidence-review narrative containing
+    # the same search terms. These are document-structure cues, not answers.
+    guidance_bonus = 0.0
+    if terms & {"care", "clinical", "guidance", "management", "prevent", "prevention", "recommendation", "therapy", "treat", "treatment", "vaccine", "vaccination"}:
+        if re.search(r"\b(?:who recommends|who suggests|good practice statement|key points)\b", content):
+            guidance_bonus = 0.20
+        elif re.search(r"\brecommendation\b", content):
+            guidance_bonus = 0.08
+    research_penalty = 0.0
+    if re.search(r"\b(?:future research|uncertainties and future research|findings of the review|studies were found|evidence was derived from|study results and measurements|attack rate)\b", content):
+        research_penalty = 0.18
+    if not terms & {"evidence", "study", "table", "trial", "compare", "comparison", "risk"} and re.search(
+        r"\b(?:study results and measurements|certainty of the evidence|based on data from \d+ participants|pico population|risk of bias)\b", content
+    ):
+        research_penalty += 0.25
+    directness = 0.0
+    if terms & {"symptom", "sign", "presentation"}:
+        if re.search(r"\b(?:symptoms? (?:can )?include|present with symptoms|signs and symptoms|symptoms include)\b", content):
+            directness += 0.24
+        if "interpretation of laboratory results" in content:
+            directness -= 0.12
+    if terms & {"transmission", "spread", "contact", "body", "fluid"}:
+        if re.search(r"\b(?:transmitted through|spread through|direct contact with (?:blood|body|bodily)|human-to-human transmission occurs)\b", content):
+            directness += 0.24
+    return s + page_bonus + lexical_bonus + guidance_bonus + directness - research_penalty
 
 def rerank_and_release(question: str, candidates: List[Dict[str, Any]], intent: str, max_passages: int = 5) -> Dict[str, Any]:
     # Basic reranking

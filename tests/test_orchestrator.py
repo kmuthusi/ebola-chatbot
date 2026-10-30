@@ -99,7 +99,11 @@ def test_orchestrator_uses_same_retrieval_path_for_different_questions(monkeypat
     rag = SimpleAssistantRAG()
     for question in ("How is Ebola diagnosed?", "What are the symptoms?", "How does it spread?"):
         assert rag.ask(SimpleAssistantRequest(question))["status"] == "machine_checked"
-    assert seen == ["How is Ebola diagnosed?", "What are the symptoms?", "How does it spread?"]
+    assert seen[0] == "How is Ebola diagnosed?"
+    assert "What are the symptoms?" in seen
+    assert "How does it spread?" in seen
+    assert any("diagnostic testing" in query for query in seen)
+    assert any("clinical presentation" in query for query in seen)
 
 
 def test_orchestrator_shows_only_checked_claims(monkeypatch):
@@ -119,8 +123,34 @@ def test_orchestrator_shows_only_checked_claims(monkeypatch):
     })
     monkeypatch.setattr(simple_rag, "repair_answer", lambda *args: "I cannot find this in the source documents.")
     result = SimpleAssistantRAG().ask(SimpleAssistantRequest("A question"))
-    assert result["status"] == "partially_checked"
+    assert result["status"] == "machine_checked"
     assert result["answer"] == "Supported fact [testing.pdf, page 3]."
+
+
+def test_classification_falls_back_to_exact_indexed_definition(monkeypatch):
+    class DefinitionStore(FakeStore):
+        def search(self, question, k=30):
+            return [{"source": "risk-assessment.pdf", "page": 4,
+                     "text": "Example disease is a severe form of illness.", "score": .9}]
+
+        def definition_search(self, subject, k=8):
+            assert subject == "Example disease"
+            return [{"source": "risk-assessment.pdf", "page": 4,
+                     "text": "Example disease is a severe form of illness.", "score": .9}]
+
+    monkeypatch.setattr(simple_rag, "VectorStore", DefinitionStore)
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "fingerprint", lambda self: "source-hash")
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "read_and_chunk", lambda self: [
+        {"source": "risk-assessment.pdf", "page": 4, "text": "Example disease is a severe form of illness."}
+    ])
+    monkeypatch.setattr(simple_rag, "compose_answer", lambda *args: "Example disease is a pathogen [risk-assessment.pdf, page 4].")
+    monkeypatch.setattr(simple_rag, "check_claims", lambda *args: {
+        "passed": False, "issues": ["Entity mismatch"], "claims": []
+    })
+    result = SimpleAssistantRAG().ask(SimpleAssistantRequest("How does the risk assessment classify Example disease?"))
+    assert result["status"] == "machine_checked"
+    assert result["answer"] == "Example disease is a severe form of illness [risk-assessment.pdf, page 4]."
+    assert result["claim_checks"][0]["verdict"] == "source_text"
 
 
 def test_orchestrator_repairs_rejected_claim_once(monkeypatch):

@@ -9,6 +9,8 @@ from typing import Any
 from retrievers import DEFAULT_DATA_DIR, PDFDirectoryRetriever
 from vector_store import VectorStore
 from rag_pipeline import rerank_and_release
+from query_planning import make_search_plan, corpus_facets, focus_on_matching_sources, focus_on_direct_guidance, focus_excerpt, answer_covers_plan, classification_target
+from evidence_selector import select_evidence, extractive_exposure_answer, compose_sourced_exposure_summary
 from bounded_composer import compose_answer, repair_answer
 from verifier import verify_answer
 from claim_checker import check_claims
@@ -55,11 +57,79 @@ class SimpleAssistantRAG:
         fingerprint = self.sources.fingerprint()
         if not self.store.source_is_current(fingerprint):
             self.index(fingerprint)
+        plan = make_search_plan(effective_question)
         candidates = self.store.search(effective_question, k=max(request.top_k, 25))
+        anchors = []
+        definition_hit = None
+        if plan.broad and hasattr(self.store, "definition_search"):
+            definitions = self.store.definition_search(plan.subject, k=1)
+            if definitions:
+                definition_hit = {**definitions[0], "is_definition": True}
+                candidates.append(definition_hit)
+                anchors.append(definition_hit)
+        facet_queries = corpus_facets(plan.subject, definition_hit["text"]) if plan.broad and definition_hit else plan.queries[1:]
+        if facet_queries:
+            seen = {(hit.get("source"), hit.get("page"), hit.get("text")) for hit in candidates}
+            for facet_query in facet_queries:
+                facet_hits = self.store.search(facet_query, k=18)
+                facet_ranked = rerank_and_release(facet_query, facet_hits, intent="documents", max_passages=2)
+                if facet_ranked["release"] == "grounded":
+                    for hit in facet_ranked["evidence"]:
+                        key = (hit.get("source"), hit.get("page"), hit.get("text"))
+                        if key not in seen:
+                            candidates.append(hit)
+                            seen.add(key)
+                    anchor = facet_ranked["evidence"][0]
+                    if (plan.broad or plan.exposure or plan.diagnosis) and hasattr(self.store, "expand_evidence"):
+                        expanded_anchor = self.store.expand_evidence([anchor], question=facet_query)[0]
+                        anchor = {**expanded_anchor, "text": focus_excerpt(expanded_anchor["text"], facet_query), "is_focused": True}
+                    anchors.append(anchor)
+        original_sources = {hit.get("source") for hit in candidates}
+        candidates = focus_on_matching_sources(plan, candidates)
+        candidates = focus_on_direct_guidance(plan, candidates)
+        focused_sources = {hit.get("source") for hit in candidates} if len({hit.get("source") for hit in candidates}) < len(original_sources) else None
+        anchors = [hit for hit in anchors if any(
+            item.get("source") == hit.get("source") and item.get("page") == hit.get("page")
+            for item in candidates
+        )]
         pipeline = rerank_and_release(
             effective_question, candidates, intent="documents", max_passages=max(1, min(request.top_k, 8)),
         )
         evidence = pipeline["evidence"]
+        if plan.diagnosis and len(anchors) >= 2 and pipeline["release"] == "grounded":
+            evidence = anchors[:2]
+        elif (plan.broad and len(anchors) >= 3 or plan.exposure and len(anchors) >= 2) and pipeline["release"] == "grounded":
+            evidence = []
+            used_pages = set()
+            for hit in anchors:
+                page = (hit.get("source"), hit.get("page"))
+                if page not in used_pages:
+                    evidence.append(hit)
+                    used_pages.add(page)
+                if len(evidence) >= max(1, min(request.top_k, 8)):
+                    break
+        elif pipeline["release"] == "grounded" and len(candidates) > 10:
+            # The local selector sees compact previews of a bounded set of
+            # distinct pages. It can keep definition, mechanism, and guidance
+            # coverage without letting a keyword match decide the answer.
+            ranked_pool = rerank_and_release(
+                effective_question, candidates, intent="documents", max_passages=24,
+            )["evidence"]
+            pool = []
+            used_pages = set()
+            for hit in [*anchors, *ranked_pool]:
+                page = (hit.get("source"), hit.get("page"))
+                if page not in used_pages:
+                    pool.append(hit)
+                    used_pages.add(page)
+                if len(pool) >= 24:
+                    break
+            evidence = select_evidence(effective_question, pool, request.ollama_model,
+                                       limit=max(1, min(request.top_k, 8)))
+        if definition_hit is not None and pipeline["release"] == "grounded":
+            evidence = [definition_hit, *(item for item in evidence if
+                         (item.get("source"), item.get("page")) !=
+                         (definition_hit.get("source"), definition_hit.get("page")))][:max(1, min(request.top_k, 8))]
         if pipeline["release"] == "refusal":
             return {"answer": "I cannot find this in the source documents.", "status": "insufficient_context", "chunks": evidence, "issues": [], "claim_checks": []}
         if hasattr(self.store, "expand_evidence"):
@@ -72,16 +142,52 @@ class SimpleAssistantRAG:
                 "status": "review_required", "issues": [f"Answer generation failed: {exc}"],
                 "claim_checks": [], "chunks": evidence,
             }
-        verified = verify_answer(answer, evidence)
         if answer.strip() == "I cannot find this in the source documents.":
             return {"answer": answer, "status": "insufficient_context", "issues": [], "claim_checks": [], "chunks": evidence}
+        verified = verify_answer(answer, evidence)
         if verified["issues"]:
             return {
                 "answer": "I could not confirm this answer from the documents. Please check the source pages below or ask a more specific question.",
                 "status": "review_required", "issues": verified["issues"], "claim_checks": [], "chunks": evidence,
             }
         checked = check_claims(answer, evidence, request.ollama_model, effective_question)
+        if checked["passed"] and (plan.broad or plan.exposure) and not answer_covers_plan(plan, checked["claims"], evidence):
+            checked = {**checked, "passed": False,
+                       "issues": ["The checked claims do not cover the requested parts of the question."],
+                       "addresses_question": False, "missing_aspects": "requested parts"}
         if not checked["passed"]:
+            target = classification_target(effective_question)
+            if target and hasattr(self.store, "definition_search"):
+                definitions = self.store.definition_search(target, k=8)
+                if definitions:
+                    question_terms = set(re.findall(r"[a-z]{4,}", effective_question.casefold()))
+                    chosen = max(definitions, key=lambda item: len(
+                        question_terms & set(re.findall(r"[a-z]{4,}", item["source"].casefold()))
+                    ))
+                    source_statement = chosen["text"].strip().rstrip(". ")
+                    statement = re.sub(r"\s+([,.;:])", r"\1", source_statement)
+                    exact = f"{statement} [{chosen['source']}, page {chosen['page']}]."
+                    if statement and not verify_answer(exact, [chosen])["issues"]:
+                        citation = (chosen["source"], chosen["page"])
+                        source_pages = [chosen, *(item for item in evidence if
+                                         (item.get("source"), item.get("page")) != citation)]
+                        return {"answer": exact, "status": "machine_checked", "issues": [],
+                                "claim_checks": [{"id": 1, "text": statement, "original": exact,
+                                                  "citations": [citation], "quote": source_statement,
+                                                  "verdict": "source_text", "relevant": True, "passed": True}],
+                                "candidate_claim_checks": checked["claims"], "chunks": source_pages}
+            if plan.exposure:
+                summary = compose_sourced_exposure_summary(effective_question, evidence)
+                if summary and not verify_answer(summary, evidence)["issues"]:
+                    summary_check = check_claims(summary, evidence, request.ollama_model, effective_question)
+                    if summary_check["passed"] and answer_covers_plan(plan, summary_check["claims"], evidence):
+                        return {"answer": summary, "status": "machine_checked", "issues": [],
+                                "claim_checks": summary_check["claims"], "candidate_claim_checks": checked["claims"],
+                                "chunks": evidence}
+                extracted = extractive_exposure_answer(effective_question, evidence)
+                if extracted and not verify_answer(extracted, evidence)["issues"]:
+                    return {"answer": extracted, "status": "source_excerpts", "issues": [],
+                            "claim_checks": [], "candidate_claim_checks": checked["claims"], "chunks": evidence}
             supported = [claim for claim in checked["claims"] if claim.get("passed")]
             rejected = [claim for claim in checked["claims"] if claim.get("relevant", True) and not claim.get("passed") and claim.get("text")]
             if rejected or checked.get("addresses_question") is False:
@@ -94,6 +200,8 @@ class SimpleAssistantRAG:
                     seen = {(item["source"], item["page"]) for item in repair_evidence}
                     additions = []
                     for item in self.store.lexical_search(query, k=8):
+                        if focused_sources and item.get("source") not in focused_sources:
+                            continue
                         key = (item["source"], item["page"])
                         if key not in seen and len(additions) < 2:
                             additions.append(item)
@@ -128,6 +236,9 @@ class SimpleAssistantRAG:
             if supported:
                 partial_answer = "\n\n".join(claim["original"] for claim in supported)
                 if not verify_answer(partial_answer, evidence)["issues"]:
+                    if answer_covers_plan(plan, supported, evidence):
+                        return {"answer": partial_answer, "status": "machine_checked", "issues": [],
+                                "claim_checks": supported, "candidate_claim_checks": checked["claims"], "chunks": evidence}
                     return {
                         "answer": partial_answer, "status": "partially_checked",
                         "issues": checked["issues"], "claim_checks": supported,
@@ -146,6 +257,9 @@ class SimpleAssistantRAG:
 
 
 def main() -> None:
+    import sys
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = argparse.ArgumentParser(description="PDF directory RAG (Local)")
     parser.add_argument("--data-dir", default=DEFAULT_DATA_DIR, help="Directory containing source PDFs")
     parser.add_argument("--index", action="store_true", help="Rebuild the PDF index")

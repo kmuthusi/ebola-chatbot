@@ -53,7 +53,8 @@ def _unquoted_examples(claim: str, quote: str) -> list[str]:
     if not match:
         return []
     quoted = _normalize(quote)
-    examples = re.split(r",|\b(?:and|or)\b", match.group(1), flags=re.I)
+    example_text = re.split(r",\s+as\s+(?:an?\s+)?(?:unsafe|safe|important|common)\b", match.group(1), maxsplit=1, flags=re.I)[0]
+    examples = re.split(r",|\b(?:and|or)\b", example_text, flags=re.I)
     missing = []
     for example in examples:
         example = re.split(
@@ -96,11 +97,41 @@ def _is_unrequested_statistic(question: str, claim: str) -> bool:
 def _is_unrequested_definition(question: str, claim: str) -> bool:
     """A general definition does not explain a requested process or adaptation."""
     return bool(
-        re.match(r"\s*how\b", question, re.I)
+        (re.match(r"\s*how\b", question, re.I)
+         or re.search(r"\b(?:treatment|therapy|diagnosis|symptoms|vaccine|vaccination)\b", question, re.I))
         and not re.search(r"\b(?:defined|classified|classification)\b", question, re.I)
         and re.search(r"\b(?:is|are)\s+(?:a|an)\s+[^.;]{0,100}\b", claim, re.I)
         and not _strong_topic_match(question, claim)
     )
+
+
+def _is_unrequested_detail(question: str, claim: str) -> bool:
+    """Reject clinical detail or adjacent tasks outside a broad information need."""
+    q = question.casefold()
+    c = claim.casefold()
+    asks_amount = bool(re.search(r"\b(?:dose|dosage|how much|how many|volume|amount|ml|mg|kg|regimen)\b", q))
+    if not asks_amount and re.search(r"\b\d+(?:\.\d+)?\s*(?:ml|mg|g|mcg|µg)\b", c):
+        return True
+    if re.search(r"\b(?:treat|treatment|therapy|clinical management)\b", q):
+        if re.search(r"\b(?:swabb?ed|surface|environmental audit)\b", c) and re.search(r"\b(?:treatment unit|treatment cent(?:er|re))\b", c):
+            return True
+        if re.search(r"\b(?:testing|specimen|assay|diagnos)\w*\b", c) and not re.search(
+            r"\b(?:treat|treatment|therapy|therapeutic|rehydrat|fluids?|antiviral|antibiotic|supportive care)\b", c
+        ):
+            return True
+    if not re.search(r"\b(?:which guideline|where can|what document|source)\b", q) and re.search(
+        r"\b(?:guideline|document|manual)\b.{0,90}\b(?:provides details|describes|covers information)\b", c
+    ):
+        return True
+    return False
+
+
+def _is_category_error(claim: str) -> bool:
+    """Keep a disease or condition distinct from the agent causing it."""
+    return bool(re.search(
+        r"\b(?:disease|illness|syndrome|condition)\s+(?:is|are|was|were)\s+(?:an?\s+)?(?:zoonotic\s+|infectious\s+)?(?:virus|pathogen|bacterium|parasite)\b",
+        claim, re.I,
+    ))
 
 
 def _strong_topic_match(question: str, claim: str) -> bool:
@@ -154,7 +185,14 @@ def split_claims(answer: str) -> list[str]:
         line = re.sub(r"^\s*(?:[-*•]|\d+[.)])\s*", "", line).strip()
         if not line or line.endswith(":"):
             continue
-        for sentence in re.split(r"(?<=[.!?])\s+(?=[A-Z0-9])", line):
+        safe_line = re.sub(
+            r"\b(?:e\.g|i\.e|vs|etc)\.",
+            lambda match: match.group(0).replace(".", "<DOT>"),
+            line,
+            flags=re.I,
+        )
+        for sentence in re.split(r"(?<=[.!?])\s+(?=[A-Z0-9])", safe_line):
+            sentence = sentence.replace("<DOT>", ".")
             content = CITATION_RE.sub("", sentence).strip(" .;:!?")
             if re.search(r"[A-Za-z]{2,}", content):
                 claims.append(sentence.strip())
@@ -208,6 +246,10 @@ def check_claims(answer: str, evidence: list[dict], model: str, question: str = 
         "Use 'supported' only when the cited text directly supports the WHOLE claim, including "
         "the named entity, population, timing, causal route, qualifiers, numbers, and recommendations. "
         "A relevant topic or related fact is not enough. Accept faithful paraphrases, but do not supply missing details from general knowledge. "
+        "Do not generalize a statement about one subtype, outbreak, population, or situation to the whole parent category. "
+        "For relevant=true, the claim must answer the user's actual information need, not merely contain a word from the question. "
+        "A bibliography entry, a pointer to another guideline, a description of a study or facility, or a fact about a different subject is not a direct answer. "
+        "For a broad overview, a definition and central features are relevant; incidental locations, document descriptions, and study methods are not. "
         "For supported claims, provide an exact "
         "verbatim quote copied from a cited excerpt that conveys the supporting fact. "
         "A claim that something cannot happen, is safe, or does not spread needs an explicit statement about that same route or condition. "
@@ -278,6 +320,8 @@ def check_claims(answer: str, evidence: list[dict], model: str, question: str = 
             (item.get("relevant", True) is not False or _strong_topic_match(question, claim["text"]))
             and not _is_unrequested_statistic(question, claim["text"])
             and not _is_unrequested_definition(question, claim["text"])
+            and not _is_unrequested_detail(question, claim["text"])
+            and not _is_category_error(claim["text"])
         )
         excerpts = [text for citation in claim["citations"] for text in available[citation]]
         quote_matches = isinstance(quote, str) and _quote_matches(quote, excerpts)

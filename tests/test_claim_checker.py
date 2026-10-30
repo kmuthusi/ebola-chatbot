@@ -1,7 +1,25 @@
 import json
 
 import claim_checker
-from claim_checker import check_claims, split_claims
+from claim_checker import check_claims, split_claims, _is_unrequested_detail, _is_category_error
+
+
+def test_abbreviation_inside_claim_does_not_split_its_citation():
+    answer = "The method uses oral fluids (e.g. water) [source.pdf, page 3]."
+    assert split_claims(answer) == [answer]
+
+
+def test_broad_care_query_excludes_doses_and_adjacent_testing_work():
+    assert _is_unrequested_detail("Ebola treatment", "Give 75 mL/kg of oral fluid.")
+    assert _is_unrequested_detail("Ebola treatment", "The preferred assay is NAAT testing.")
+    assert not _is_unrequested_detail("How much oral fluid is given?", "Give 75 mL/kg of oral fluid.")
+    assert not _is_unrequested_detail("Ebola treatment", "Start fluids early to prevent fluid losses.")
+
+
+def test_disease_is_not_labeled_as_its_causative_agent():
+    assert _is_category_error("Bundibugyo virus disease is a zoonotic pathogen.")
+    assert not _is_category_error("Bundibugyo virus is a zoonotic pathogen.")
+    assert not _is_category_error("Bundibugyo virus disease is caused by a pathogen.")
 
 
 EVIDENCE = [{"source": "guide.pdf", "page": 2, "text": "The recommended specimen for living patients is whole blood."}]

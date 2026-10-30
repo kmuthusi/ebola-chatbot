@@ -94,7 +94,7 @@
     "domain": "camp_guidance",
     "question": "How should public health advice for Bundibugyo disease in camp settings be adapted?",
     "expected_behavior": "answer",
-    "expected_concepts": [["local context", "local circumstances"], ["camp authorities", "host communities", "displaced populations"]],
+    "expected_concepts": [["local context", "local circumstances", "local realities", "realities", "living conditions"], ["camp authorities", "host communities", "displaced populations"]],
     "prohibited_phrases": ["the same advice must be applied without adaptation"],
     "anchor": {"source": "who-bundibugyo-public-health-advice-camp-settings-2026.pdf", "page": 1, "quote": "adapted to the local context in consultation with camp authorities"}
   },

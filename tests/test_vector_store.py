@@ -49,6 +49,9 @@ def test_index_and_query_use_ollama_batches(tmp_path, monkeypatch):
     assert result[0]["page"] == 7
     assert result[0]["source"] == "a.pdf"
     assert result[0]["score"] > 0
+    calls_after_query = len(calls)
+    store.query("question", k=1)
+    assert len(calls) == calls_after_query
 
 
 def test_query_excludes_reference_pages(tmp_path, monkeypatch):

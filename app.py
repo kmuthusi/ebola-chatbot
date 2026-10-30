@@ -46,6 +46,8 @@ def render_response(result: dict) -> None:
                 st.write(issue)
     elif result["answer"] == "I cannot find this in the source documents.":
         st.caption("No clear answer was found in the indexed documents. Try a more specific question.")
+    elif result.get("status") == "source_excerpts":
+        st.caption("These words are copied from the cited pages. They describe the guidance and transmission route; they do not measure the risk from one encounter.")
     elif result.get("status") == "machine_checked":
         st.caption("The answer was checked against the cited pages by software. Check the source text before using it to make a care decision.")
     else:

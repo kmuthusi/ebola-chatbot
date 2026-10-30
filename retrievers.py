@@ -10,6 +10,22 @@ from pypdf import PdfReader
 DEFAULT_DATA_DIR = "data"
 
 
+def _is_reference_page(text: str) -> bool:
+    """Exclude bibliographies and lists of other documents from clinical search."""
+    head = text[:600].casefold()
+    if re.search(r"(?im)^\s*(?:\d+[. ]*)?references\s*$", text[:600]):
+        return True
+    if "accompanying who documents" in head or "other who documents" in head:
+        return True
+    if "abbreviations and acronyms" in head or "table of contents" in head:
+        return True
+    numbered_citations = len(re.findall(r"(?m)^\s*\d{1,3}\.\s+[A-Z][^\n]{15,}", text))
+    if numbered_citations >= 2 and re.search(r"doi:|doi\.org|et al\.|J Infect\.|Lancet|PubMed", text, re.I):
+        return True
+    links = len(re.findall(r"https?://|www\.", text, re.I))
+    return links >= 3 and (links * 180 >= len(text) or links >= 6)
+
+
 class PDFDirectoryRetriever:
     def __init__(self, data_dir: str = DEFAULT_DATA_DIR):
         self.data_dir = Path(data_dir)
@@ -39,11 +55,15 @@ class PDFDirectoryRetriever:
         pages = []
         for path in self.pdf_paths():
             reader = PdfReader(path)
+            in_references = False
             for page_number, page in enumerate(reader.pages, start=1):
                 text = (page.extract_text() or "").strip()
                 if text:
-                    references = bool(re.search(r"(?im)^\s*(?:\d+\s*)?references\s*$", text[:350]))
-                    references |= text.lower().count("doi.org/") >= 3
+                    if re.search(r"(?im)^\s*(?:annex|appendix)\b", text[:250]):
+                        in_references = False
+                    if re.search(r"(?im)^\s*(?:\d+[. ]*)?references\s*$", text):
+                        in_references = True
+                    references = in_references or _is_reference_page(text)
                     pages.append({
                         "source": path.name,
                         "page": page_number,

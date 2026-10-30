@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 DEFAULT_EMBED_MODEL = "nomic-embed-text:latest"
+INDEX_SCHEMA = "pdf-directory-v3-structure-aware"
 _SEARCH_STOPWORDS = {"a", "about", "an", "and", "are", "can", "do", "does", "for", "how", "in", "is", "of", "or", "the", "there", "to", "what", "when", "where", "which", "who", "with"}
 
 
@@ -39,7 +40,7 @@ def _hash_manifest(items: List[Dict[str, Any]]) -> str:
         digest.update(str(item.get("source", "")).encode())
         digest.update(str(item.get("page")).encode())
         digest.update(str(item.get("text", "")).encode())
-    digest.update(b"pdf-directory-v2")
+    digest.update(INDEX_SCHEMA.encode())
     return digest.hexdigest()
 
 
@@ -73,6 +74,7 @@ class VectorStore:
         self._manifest_hash: Optional[str] = None
         self._source_fingerprint: Optional[str] = None
         self._lexical_cache = None
+        self._query_cache: Dict[tuple[str, int, str | None], List[Dict[str, Any]]] = {}
         self._load_manifest()
 
     def _load_manifest(self) -> None:
@@ -80,7 +82,7 @@ class VectorStore:
             try:
                 manifest = json.loads(self.manifest_path.read_text())
                 self._manifest_hash = manifest.get("hash")
-                if manifest.get("embed_model") == self.embed_model:
+                if manifest.get("embed_model") == self.embed_model and manifest.get("index_schema") == INDEX_SCHEMA:
                     self._source_fingerprint = manifest.get("source_fingerprint")
             except (OSError, json.JSONDecodeError):
                 self._manifest_hash = None
@@ -93,6 +95,7 @@ class VectorStore:
         self.manifest_path.write_text(json.dumps({
             "hash": self._manifest_hash,
             "embed_model": self.embed_model,
+            "index_schema": INDEX_SCHEMA,
             "source_fingerprint": fingerprint,
         }, indent=2))
 
@@ -104,10 +107,17 @@ class VectorStore:
         length = len(text)
         while start < length:
             end = min(start + chunk_len, length)
+            if end < length:
+                lower = start + int(chunk_len * 0.60)
+                for boundary in ("\n\n", "\n", ". ", "; "):
+                    cut = text.rfind(boundary, lower, end)
+                    if cut >= 0:
+                        end = cut + len(boundary)
+                        break
             chunks.append(text[start:end])
             if end == length:
                 break
-            start = end - overlap
+            start = max(start + 1, end - overlap)
         return [chunk.strip() for chunk in chunks if len(chunk.strip()) > 40]
 
     def index_chunks(self, raw_chunks: List[Dict[str, Any]]) -> None:
@@ -130,6 +140,7 @@ class VectorStore:
             pass
         self.collection = self.client.get_or_create_collection(self.collection_name)
         self._lexical_cache = None
+        self._query_cache.clear()
 
         for start in range(0, len(records), batch_size):
             batch = records[start:start + batch_size]
@@ -149,7 +160,8 @@ class VectorStore:
 
         self._manifest_hash = manifest
         self._source_fingerprint = None
-        self.manifest_path.write_text(json.dumps({"hash": manifest, "embed_model": self.embed_model}, indent=2))
+        self.manifest_path.write_text(json.dumps({"hash": manifest, "embed_model": self.embed_model,
+                                                  "index_schema": INDEX_SCHEMA}, indent=2))
 
     def ensure_index(self, raw_chunks: List[Dict[str, Any]]) -> None:
         manifest = hashlib.sha256((self.embed_model + _hash_manifest(raw_chunks)).encode()).hexdigest()
@@ -159,6 +171,9 @@ class VectorStore:
     def query(self, query: str, k: int = 5, include_scores: bool = True, source: str | None = None) -> List[Dict[str, Any]]:
         if self.collection.count() == 0:
             return []
+        cache_key = (query, k, source)
+        if include_scores and cache_key in self._query_cache:
+            return [dict(item) for item in self._query_cache[cache_key]]
         query_embedding = ollama.embed(model=self.embed_model, input=query)["embeddings"][0]
         include = ["documents", "metadatas", "distances"] if include_scores else ["documents", "metadatas"]
         where = {"section": "body"}
@@ -184,6 +199,8 @@ class VectorStore:
                     "score": (1.0 / (1.0 + distance)) if distance is not None else None,
                 }
             )
+        if include_scores:
+            self._query_cache[cache_key] = [dict(item) for item in output]
         return output
 
     def keyword_query(self, phrase: str, k: int = 5) -> List[Dict[str, Any]]:
@@ -232,6 +249,9 @@ class VectorStore:
                 by_page.setdefault((meta.get("source"), meta.get("page")), []).append(text)
         expanded = []
         for hit in evidence:
+            if hit.get("is_definition") or hit.get("is_focused"):
+                expanded.append(hit)
+                continue
             chunks = by_page.get((hit.get("source"), hit.get("page")), [])
             if len(chunks) < 2:
                 expanded.append(hit)
@@ -245,7 +265,7 @@ class VectorStore:
             for term in focus_terms:
                 match = re.search(rf"\b{re.escape(term)}\w*", full_page, re.I)
                 if match:
-                    start = max(0, match.start() - 250)
+                    start = max(0, match.start() - 500)
                     expanded.append({**hit, "text": full_page[start:start + max_chars]})
                     break
             else:
@@ -277,6 +297,50 @@ class VectorStore:
              "section": "body", "score": min(0.60, 0.35 + 0.02 * score)}
             for score, text, meta in scored[:k]
         ]
+
+    def definition_search(self, subject: str, k: int = 2) -> List[Dict[str, Any]]:
+        """Find sentences that actually define a subject, regardless of domain."""
+        records, _, _ = self._lexical_records()
+        if not subject.strip():
+            return []
+        topic = re.compile(rf"\b{re.escape(subject.casefold())}\b")
+        matches = []
+        for text, meta, _, _ in records:
+            if meta.get("section") != "body" or _is_publication_matter(text, {subject}):
+                continue
+            compact = re.sub(r"\s+", " ", text)
+            for sentence in re.split(r"(?<=[.!?])\s+", compact):
+                lower_sentence = sentence.casefold()
+                definition = re.search(r"\b(?:is an?|are an?|refers to|means|defined as|is caused by|are caused by)\b", lower_sentence)
+                mentions = [match for match in topic.finditer(lower_sentence)
+                            if definition and match.start() < definition.start()]
+                mention = mentions[-1] if mentions else None
+                max_prefix = 250 if len(subject.split()) > 1 else 12
+                if not mention or mention.start() > max_prefix or len(sentence) > 380 or len(sentence) < 30:
+                    continue
+                if re.search(r"\b(?:diagnostic testing for|compared with previous|outbreak caused by|study of|references)\b", lower_sentence):
+                    continue
+                if not definition:
+                    continue
+                distance = abs(definition.start() - mention.end())
+                if distance > 180:
+                    continue
+                score = 1.0 / (1 + distance / 30) + (0.7 if mention.start() < 30 else 0)
+                excerpt = sentence[mention.start():] if len(subject.split()) > 1 else sentence
+                matches.append((score, excerpt, meta))
+                break
+        matches.sort(key=lambda item: item[0], reverse=True)
+        seen = set()
+        output = []
+        for _, text, meta in matches:
+            key = (meta.get("source"), meta.get("page"))
+            if key in seen:
+                continue
+            seen.add(key)
+            output.append({"text": text, "page": key[1], "source": key[0], "section": "body", "score": .9})
+            if len(output) >= k:
+                break
+        return output
 
     def search(self, question: str, k: int = 30) -> List[Dict[str, Any]]:
         """Combine semantic and lexical matches from every indexed PDF."""

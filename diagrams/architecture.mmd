@@ -1,0 +1,8 @@
+flowchart TD
+    A[User Question] --> B["simple_rag.py (Orchestrator)"]
+    B --> D["retrievers.py (All PDFs in data)"]
+    D --> E["vector_store.py (Embeddings + Chroma + Freshness)"]
+    E --> F["rag_pipeline.py (Rerank + Release)"]
+    F --> G["bounded_composer.py (Ollama Evidence-only)"]
+    G --> H["verifier.py (Citations/Unsupported Claims)"]
+    H --> I[Final Answer]

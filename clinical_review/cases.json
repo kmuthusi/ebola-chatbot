@@ -1,0 +1,137 @@
+[
+  {
+    "id": "FIL-001",
+    "domain": "overview",
+    "question": "What is Bundibugyo virus disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["Bundibugyo", "BVD"], ["Ebola disease"]],
+    "prohibited_phrases": ["harmless"],
+    "anchor": {"source": "who-bundibugyo-public-health-advice-camp-settings-2026.pdf", "page": 1, "quote": "Bundibugyo virus disease (BVD) is a severe and often fatal form of Ebola disease"}
+  },
+  {
+    "id": "FIL-002",
+    "domain": "transmission",
+    "question": "How can direct contact transmit Ebola disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["blood", "body fluids"], ["contact", "touching"]],
+    "prohibited_phrases": ["casual contact is always safe"],
+    "anchor": {"source": "ipc-ebola-marburg-2026.pdf", "page": 11, "quote": "unprotected touching of blood or other body fluids from a person infected"}
+  },
+  {
+    "id": "FIL-003",
+    "domain": "diagnostics",
+    "question": "Is laboratory testing recommended for asymptomatic contacts of Ebola disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["asymptomatic"], ["not recommended", "should not"]],
+    "prohibited_phrases": ["routine testing of asymptomatic contacts is recommended"],
+    "anchor": {"source": "diagnostic-testing-ebola-marburg-2026.pdf", "page": 8, "quote": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended"}
+  },
+  {
+    "id": "FIL-004",
+    "domain": "diagnostics",
+    "question": "What specimen is recommended for laboratory testing of a living patient with suspected Ebola disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["whole blood", "EDTA blood", "EDTA-blood"]],
+    "prohibited_phrases": ["oral swab is preferred for living patients"],
+    "anchor": {"source": "diagnostic-testing-ebola-marburg-2026.pdf", "page": 8, "quote": "whole blood (EDTA blood) for living patients"}
+  },
+  {
+    "id": "FIL-005",
+    "domain": "diagnostics",
+    "question": "What specimen is recommended for testing a deceased person for Ebola disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["oral swab"]],
+    "prohibited_phrases": ["whole blood is preferred for deceased individuals"],
+    "anchor": {"source": "diagnostic-testing-ebola-marburg-2026.pdf", "page": 8, "quote": "oral swab for deceased individuals"}
+  },
+  {
+    "id": "FIL-006",
+    "domain": "diagnostics",
+    "question": "What assay type does the diagnostic guidance prefer for confirming Ebola disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["NAAT", "nucleic acid amplification"]],
+    "prohibited_phrases": ["antibody testing is the preferred confirmatory assay"],
+    "anchor": {"source": "diagnostic-testing-ebola-marburg-2026.pdf", "page": 19, "quote": "NAAT is currently the preferred technique"}
+  },
+  {
+    "id": "FIL-007",
+    "domain": "clinical_management",
+    "question": "What does the clinical guideline say about monitoring patients with suspected filovirus disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["systematic", "structured"], ["monitoring", "reassessment"]],
+    "prohibited_phrases": ["monitoring is unnecessary"],
+    "anchor": {"source": "clinical-management-filovirus-2026.pdf", "page": 17, "quote": "systematic and structured patient monitoring from the earliest point of contact"}
+  },
+  {
+    "id": "FIL-008",
+    "domain": "clinical_management",
+    "question": "Which intravenous fluid does the clinical guideline recommend for acute resuscitation in filovirus disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["balanced crystalloids", "Ringer"]],
+    "prohibited_phrases": ["normal saline is preferred over balanced crystalloids"],
+    "anchor": {"source": "clinical-management-filovirus-2026.pdf", "page": 30, "quote": "WHO recommends balanced crystalloids"}
+  },
+  {
+    "id": "FIL-009",
+    "domain": "infection_prevention",
+    "question": "What does the IPC guideline say about isolating patients with suspected Ebola disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["isolated", "isolation", "isolating"], ["single room", "single-patient room", "single-occupancy", "PPE", "protective equipment"]],
+    "prohibited_phrases": ["isolation is unnecessary"],
+    "anchor": {"source": "ipc-ebola-marburg-2026.pdf", "page": 17, "quote": "should be isolated, preferably in a single room"}
+  },
+  {
+    "id": "FIL-010",
+    "domain": "infection_prevention",
+    "question": "What extra protective equipment does the IPC guideline specify for cleaners during Ebola care?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["heavy-duty", "utility gloves"], ["waterproof boots", "boots"]],
+    "prohibited_phrases": ["cleaners need no protective equipment"],
+    "anchor": {"source": "ipc-ebola-marburg-2026.pdf", "page": 18, "quote": "the outer pair of gloves should be heavy-duty (utility) gloves"}
+  },
+  {
+    "id": "FIL-011",
+    "domain": "camp_guidance",
+    "question": "How should public health advice for Bundibugyo disease in camp settings be adapted?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["local context", "local circumstances"], ["camp authorities", "host communities", "displaced populations"]],
+    "prohibited_phrases": ["the same advice must be applied without adaptation"],
+    "anchor": {"source": "who-bundibugyo-public-health-advice-camp-settings-2026.pdf", "page": 1, "quote": "adapted to the local context in consultation with camp authorities"}
+  },
+  {
+    "id": "FIL-012",
+    "domain": "risk_assessment",
+    "question": "How does the WHO Bundibugyo risk assessment classify Bundibugyo virus disease?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["form of Ebola disease", "Ebola disease"], ["Bundibugyo"]],
+    "prohibited_phrases": ["not related to Ebola"],
+    "anchor": {"source": "who-bundibugyo-risk-assessment-drc-v4-2026.pdf", "page": 9, "quote": "Bundibugyo virus disease (BVD) , a form of Ebola disease"}
+  },
+  {
+    "id": "FIL-013",
+    "domain": "out_of_scope",
+    "question": "What are the Xalec AutoML service options?",
+    "expected_behavior": "decline",
+    "expected_concepts": [],
+    "prohibited_phrases": ["Xalec provides", "Xalec offers"],
+    "anchor": null
+  },
+  {
+    "id": "FIL-014",
+    "domain": "transmission",
+    "question": "Can I get Ebola by shaking hands?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["direct contact", "touching"], ["blood", "body fluids"]],
+    "prohibited_phrases": ["shaking hands is safe", "cannot spread through handshakes", "handshakes cannot spread Ebola", "you can get Ebola by shaking hands with someone who is infected", "shaking hands with someone who has Ebola can be a way to get infected"],
+    "anchor": {"source": "ipc-ebola-marburg-2026.pdf", "page": 11, "quote": "unprotected touching of blood or other body fluids from a person infected"}
+  },
+  {
+    "id": "FIL-015",
+    "domain": "diagnostics",
+    "question": "How is Ebola virus disease diagnosed?",
+    "expected_behavior": "answer",
+    "expected_concepts": [["NAAT", "nucleic acid amplification"], ["whole blood", "EDTA blood"]],
+    "prohibited_phrases": ["symptoms alone confirm Ebola", "oral swab is preferred for living patients"],
+    "anchor": {"source": "diagnostic-testing-ebola-marburg-2026.pdf", "page": 8, "quote": "whole blood (EDTA blood) for living patients"}
+  }
+]

@@ -1,0 +1,22 @@
+User Question
+     |
+     v
+simple_rag.py (orchestrator)
+     |
+     v
+retrievers.py (all PDFs in data, page text and filename)
+     |
+     v
+vector_store.py (Ollama embeddings, ChromaDB, freshness)
+     |
+     v
+rag_pipeline.py (relevance and release)
+     |
+     v
+bounded_composer.py (grounded answer)
+     |
+     v
+verifier.py (document and page citations)
+     |
+     v
+Final Answer

@@ -1,0 +1,875 @@
+[
+  {
+    "case_id": "FIL-001",
+    "domain": "overview",
+    "question": "What is Bundibugyo virus disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Bundibugyo virus disease is a severe viral haemorrhagic disease caused by Bundibugyo virus (BDBV) [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].\n\nBundibugyo virus disease is a form of Ebola disease, caused by the Bundibugyo virus (BDBV) [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1].\n\nThe CFR of Bundibugyo virus disease is approximately 25–36% [surveillance-case-investigation-contact-tracing-filovirus-2026.pdf, page 10].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Bundibugyo virus disease is a severe viral haemorrhagic disease caused by Bundibugyo virus (BDBV) .",
+        "original": "Bundibugyo virus disease is a severe viral haemorrhagic disease caused by Bundibugyo virus (BDBV) [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+        "citations": [
+          [
+            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+            9
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Hazard assessment \nBundibugyo virus disease (BVD) , a form of Ebola disease, is a severe viral haemorrhagic disease caused by \nBundibugyo virus (BDBV), a member of the Orthoebolavirus genus in the Filoviridae family.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Bundibugyo virus disease is a form of Ebola disease, caused by the Bundibugyo virus (BDBV) .",
+        "original": "Bundibugyo virus disease is a form of Ebola disease, caused by the Bundibugyo virus (BDBV) [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            1
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Bundibugyo virus disease (BVD) is a severe \nand often fatal form of Ebola disease, caused \nby the Bundibugyo virus (BDBV), a species of \nOrthoebolavirus.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "The CFR of Bundibugyo virus disease is approximately 25–36% .",
+        "original": "The CFR of Bundibugyo virus disease is approximately 25–36% [surveillance-case-investigation-contact-tracing-filovirus-2026.pdf, page 10].",
+        "citations": [
+          [
+            "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+            10
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The CFR is approximately 25–36%.",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        9
+      ],
+      [
+        "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+        10
+      ],
+      [
+        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+        1
+      ],
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        9
+      ],
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        18
+      ]
+    ],
+    "seconds": 6.92,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-002",
+    "domain": "transmission",
+    "question": "How can direct contact transmit Ebola disease?",
+    "passed_automatic_screen": false,
+    "status": "partially_checked",
+    "answer": "Direct contact with blood and other body fluids can transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 37].\n\nDirect contact with mucous membranes or broken skin can transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 37].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [
+      "Claim 3 was unsupported by the automated check."
+    ],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Direct contact with blood and other body fluids can transmit Ebola disease .",
+        "original": "Direct contact with blood and other body fluids can transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Human-to-human transmission occurs via exposure to blood and other body fluids via contact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Direct contact with mucous membranes or broken skin can transmit Ebola disease .",
+        "original": "Direct contact with mucous membranes or broken skin can transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "1. exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;2. exposure of broken skin to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        37
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        34
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        35
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        11
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        89
+      ]
+    ],
+    "seconds": 4.97,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-003",
+    "domain": "diagnostics",
+    "question": "Is laboratory testing recommended for asymptomatic contacts of Ebola disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended for Ebola disease [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended for Ebola disease .",
+        "original": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended for Ebola disease [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended, including for travel or point-of-entry screening purposes.",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        20
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        8
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        50
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        14
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        14
+      ]
+    ],
+    "seconds": 2.51,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-004",
+    "domain": "diagnostics",
+    "question": "What specimen is recommended for laboratory testing of a living patient with suspected Ebola disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "For laboratory testing of a living patient with suspected Ebola disease, the recommended specimen is EDTA-blood, which can be collected by venous blood collection or capillary blood collected by heel-prick in infants when venous blood is in [diagnostic-testing-ebola-marburg-2026.pdf, page 15].\n\nAll samples collected for Ebola disease testing should be regarded as potentially infectious and handled with extreme caution [diagnostic-testing-ebola-marburg-2026.pdf, page 16].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "For laboratory testing of a living patient with suspected Ebola disease, the recommended specimen is EDTA-blood, which can be collected by venous blood collection or capillary blood collected by heel-prick in infants when venous blood is in .",
+        "original": "For laboratory testing of a living patient with suspected Ebola disease, the recommended specimen is EDTA-blood, which can be collected by venous blood collection or capillary blood collected by heel-prick in infants when venous blood is in [diagnostic-testing-ebola-marburg-2026.pdf, page 15].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            15
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Capillary blood collected by heel-prick may be considered in infants when venous blood collection is not feasible, although reduced sensitivity should be anticipated (15).",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "All samples collected for Ebola disease testing should be regarded as potentially infectious and handled with extreme caution .",
+        "original": "All samples collected for Ebola disease testing should be regarded as potentially infectious and handled with extreme caution [diagnostic-testing-ebola-marburg-2026.pdf, page 16].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            16
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "All samples collected should be regarded as potentially infectious and handled with extreme caution (see section on biological risk management of this guidance document)",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        16
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        15
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        20
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        20
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        8
+      ]
+    ],
+    "seconds": 4.15,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-005",
+    "domain": "diagnostics",
+    "question": "What specimen is recommended for testing a deceased person for Ebola disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Oral swab, placed in viral transport medium, is the preferred specimen for testing a deceased person for Ebola disease [diagnostic-testing-ebola-marburg-2026.pdf, page 15].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Oral swab, placed in viral transport medium, is the preferred specimen for testing a deceased person for Ebola disease .",
+        "original": "Oral swab, placed in viral transport medium, is the preferred specimen for testing a deceased person for Ebola disease [diagnostic-testing-ebola-marburg-2026.pdf, page 15].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            15
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "NAAT Oral swab, placed in viral transport medium\nThe preferred swab type is nylon flocked swabs.",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        16
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        15
+      ],
+      [
+        "cdc-mmwr-bundibugyo-outbreak-august-2026.pdf",
+        1
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        232
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        145
+      ]
+    ],
+    "seconds": 1.97,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-006",
+    "domain": "diagnostics",
+    "question": "What assay type does the diagnostic guidance prefer for confirming Ebola disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) .",
+        "original": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT).",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        8
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        20
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        9
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        22
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        14
+      ]
+    ],
+    "seconds": 2.7,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-007",
+    "domain": "clinical_management",
+    "question": "What does the clinical guideline say about monitoring patients with suspected filovirus disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition [clinical-management-filovirus-executive-summary-2026.pdf, page 8].\n\nThis statement applies to all children and adults, including pregnant women [clinical-management-filovirus-executive-summary-2026.pdf, page 8].\n\nAbnormalities which are identified during an assessment and monitoring must be followed by immediate action which is expected to improve the patient’s outcome [clinical-management-filovirus-executive-summary-2026.pdf, page 8].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition .",
+        "original": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition [clinical-management-filovirus-executive-summary-2026.pdf, page 8].",
+        "citations": [
+          [
+            "clinical-management-filovirus-executive-summary-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "This statement applies to all children and adults, including pregnant women .",
+        "original": "This statement applies to all children and adults, including pregnant women [clinical-management-filovirus-executive-summary-2026.pdf, page 8].",
+        "citations": [
+          [
+            "clinical-management-filovirus-executive-summary-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "This statement applies to all children and adults, including pregnant women.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Abnormalities which are identified during an assessment and monitoring must be followed by immediate action which is expected to improve the patient’s outcome .",
+        "original": "Abnormalities which are identified during an assessment and monitoring must be followed by immediate action which is expected to improve the patient’s outcome [clinical-management-filovirus-executive-summary-2026.pdf, page 8].",
+        "citations": [
+          [
+            "clinical-management-filovirus-executive-summary-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Abnormalities which are identified during an assessment and monitoring must be followed by immediate action which is expected to improve the patient’s outcome.",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "clinical-management-filovirus-executive-summary-2026.pdf",
+        8
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        18
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        17
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        9
+      ],
+      [
+        "clinical-management-filovirus-executive-summary-2026.pdf",
+        6
+      ]
+    ],
+    "seconds": 4.75,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-008",
+    "domain": "clinical_management",
+    "question": "Which intravenous fluid does the clinical guideline recommend for acute resuscitation in filovirus disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "The clinical guideline recommends Ringer’s lactate for acute intravenous fluid resuscitation in filovirus disease [clinical-management-filovirus-2026.pdf, page 30].\n\nThe guideline applies to children and adults, including pregnant women, with sepsis, septic shock, and/or dehydration [clinical-management-filovirus-2026.pdf, page 30].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "The clinical guideline recommends Ringer’s lactate for acute intravenous fluid resuscitation in filovirus disease .",
+        "original": "The clinical guideline recommends Ringer’s lactate for acute intravenous fluid resuscitation in filovirus disease [clinical-management-filovirus-2026.pdf, page 30].",
+        "citations": [
+          [
+            "clinical-management-filovirus-2026.pdf",
+            30
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "This applies to children and adults including pregnant women, who have sepsis, septic shock and/or dehydration.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "The guideline applies to children and adults, including pregnant women, with sepsis, septic shock, and/or dehydration .",
+        "original": "The guideline applies to children and adults, including pregnant women, with sepsis, septic shock, and/or dehydration [clinical-management-filovirus-2026.pdf, page 30].",
+        "citations": [
+          [
+            "clinical-management-filovirus-2026.pdf",
+            30
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "This recommendation should be applied in the context of others, including those related to vasopressor initiation and monitoring of fluid response.",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "clinical-management-filovirus-2026.pdf",
+        30
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        10
+      ],
+      [
+        "clinical-management-filovirus-executive-summary-2026.pdf",
+        6
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        25
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        26
+      ]
+    ],
+    "seconds": 3.41,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-009",
+    "domain": "infection_prevention",
+    "question": "What does the IPC guideline say about isolating patients with suspected Ebola disease?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers [ipc-ebola-marburg-2026.pdf, page 48].\n\nIsolation of individuals with suspected or confirmed Ebola disease or Marburg disease should be done in single-occupancy patient rooms [ipc-ebola-marburg-2026.pdf, page 48].\n\nCohorting of suspected and confirmed cases is not advised [ipc-ebola-marburg-2026.pdf, page 48].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers .",
+        "original": "Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers [ipc-ebola-marburg-2026.pdf, page 48].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            48
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Isolation of individuals with suspected or confirmed Ebola disease or Marburg disease should be done in single-occupancy patient rooms .",
+        "original": "Isolation of individuals with suspected or confirmed Ebola disease or Marburg disease should be done in single-occupancy patient rooms [ipc-ebola-marburg-2026.pdf, page 48].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            48
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Ideally, isolation of individuals with suspected or confirmed EBOD or MARD should be done in single-occupancy patient rooms.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Cohorting of suspected and confirmed cases is not advised .",
+        "original": "Cohorting of suspected and confirmed cases is not advised [ipc-ebola-marburg-2026.pdf, page 48].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            48
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "and therefore cohorting of suspected and confirmed cases is not advised.",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        48
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        49
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        15
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        17
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        15
+      ]
+    ],
+    "seconds": 4.67,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-010",
+    "domain": "infection_prevention",
+    "question": "What extra protective equipment does the IPC guideline specify for cleaners during Ebola care?",
+    "passed_automatic_screen": false,
+    "status": "review_required",
+    "answer": "I could not confirm this answer from the documents. Please check the source pages below or ask a more specific question.",
+    "missing_concepts": [
+      [
+        "heavy-duty",
+        "utility gloves"
+      ],
+      [
+        "waterproof boots",
+        "boots"
+      ]
+    ],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [
+      "Claim 1 has no matching verbatim source quote."
+    ],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Cleaners during Ebola care should wear a medical mask in combination with eye protection, a fluid-resistant coverall, and two pairs of gloves .",
+        "original": "Cleaners during Ebola care should wear a medical mask in combination with eye protection, a fluid-resistant coverall, and two pairs of gloves [ipc-ebola-marburg-2026.pdf, page 64].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            64
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "a medical mask in combination with eye protection, a fluid-resistant coverall, and two pairs of gloves.",
+        "reason": "",
+        "passed": false
+      }
+    ],
+    "cited_sources": [
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        129
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        52
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        64
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        4
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        15
+      ]
+    ],
+    "seconds": 2.74,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-011",
+    "domain": "camp_guidance",
+    "question": "How should public health advice for Bundibugyo disease in camp settings be adapted?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Public health advice for Bundibugyo disease in camp settings should be adapted to the local context in consultation with camp authorities, displaced populations, and host communities [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1].\n\nPeople living in camps and camp-like settings should receive timely, accurate, and easy-to-understand information about the disease through trusted channels [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 3].\n\nCommunity members, outreach workers, and camp leaders should be equipped to support early detection, timely referral, and access to testing and treatment [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 3].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Public health advice for Bundibugyo disease in camp settings should be adapted to the local context in consultation with camp authorities, displaced populations, and host communities .",
+        "original": "Public health advice for Bundibugyo disease in camp settings should be adapted to the local context in consultation with camp authorities, displaced populations, and host communities [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            1
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "This public health advice should be adapted to the local context in consultation with camp authorities, displaced populations and host communities.",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "People living in camps and camp-like settings should receive timely, accurate, and easy-to-understand information about the disease through trusted channels .",
+        "original": "People living in camps and camp-like settings should receive timely, accurate, and easy-to-understand information about the disease through trusted channels [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 3].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            3
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Authorities and partners should ensure that people living in camps and camp-like settings receive timely, accurate and easy-to-understand information about the disease through trusted channels (4).",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Community members, outreach workers, and camp leaders should be equipped to support early detection, timely referral, and access to testing and treatment .",
+        "original": "Community members, outreach workers, and camp leaders should be equipped to support early detection, timely referral, and access to testing and treatment [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 3].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            3
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Community members, outreach workers and camp leaders should be equipped to support nearly detection, timely referral, and access to testing and treatment, which helps to reduce transmission and protects the health of camp residents (9).",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+        1
+      ],
+      [
+        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+        1
+      ],
+      [
+        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+        3
+      ],
+      [
+        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+        1
+      ],
+      [
+        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+        4
+      ]
+    ],
+    "seconds": 10.78,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-012",
+    "domain": "risk_assessment",
+    "question": "How does the WHO Bundibugyo risk assessment classify Bundibugyo virus disease?",
+    "passed_automatic_screen": false,
+    "status": "partially_checked",
+    "answer": "The CFR of Bundibugyo virus disease is approximately 30% [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].\n\nBundibugyo virus disease is considered a zoonotic pathogen [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+    "missing_concepts": [
+      [
+        "form of Ebola disease",
+        "Ebola disease"
+      ]
+    ],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [
+      "Claim 1 was unsupported by the automated check."
+    ],
+    "claim_checks": [
+      {
+        "id": 2,
+        "text": "The CFR of Bundibugyo virus disease is approximately 30% .",
+        "original": "The CFR of Bundibugyo virus disease is approximately 30% [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+        "citations": [
+          [
+            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+            9
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The previous BVD outbreaks reported CFR of approximately 30% ",
+        "reason": "",
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Bundibugyo virus disease is considered a zoonotic pathogen .",
+        "original": "Bundibugyo virus disease is considered a zoonotic pathogen [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+        "citations": [
+          [
+            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+            9
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "BDBV is considered a zoonotic pathogen,",
+        "reason": "",
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        9
+      ],
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        20
+      ],
+      [
+        "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+        10
+      ],
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        21
+      ],
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        17
+      ]
+    ],
+    "seconds": 3.57,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-013",
+    "domain": "out_of_scope",
+    "question": "What are the Xalec AutoML service options?",
+    "passed_automatic_screen": true,
+    "status": "insufficient_context",
+    "answer": "I cannot find this in the source documents.",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [],
+    "cited_sources": [
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        112
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        113
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        113
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        112
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        97
+      ]
+    ],
+    "seconds": 0.66,
+    "clinical_review": "pending"
+  }
+]

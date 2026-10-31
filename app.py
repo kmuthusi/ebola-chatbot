@@ -193,9 +193,7 @@ for message in st.session_state.messages:
             render_response(message["result"])
 
 pending_question = st.session_state.pending_question
-if pending_question:
-    with st.chat_message("assistant"):
-        st.write("Looking through the source documents...")
+pending_bubble = st.chat_message("assistant") if pending_question else None
 
 with st.container(border=True):
     with st.form("question_form", clear_on_submit=True, border=False):
@@ -221,13 +219,15 @@ if submitted and prompt.strip():
     st.rerun()
 
 if pending_question:
-    try:
-        result = rag.ask(SimpleAssistantRequest(
-            question=pending_question["question"], previous_question=pending_question["previous_question"],
-            top_k=pending_question["top_k"], ollama_model=pending_question["model"],
-        ))
-    except Exception as exc:
-        result = {"answer": f"The question could not be completed: {exc}", "error": True, "chunks": []}
+    with pending_bubble:
+        with st.spinner("Searching the guidelines and checking the answer..."):
+            try:
+                result = rag.ask(SimpleAssistantRequest(
+                    question=pending_question["question"], previous_question=pending_question["previous_question"],
+                    top_k=pending_question["top_k"], ollama_model=pending_question["model"],
+                ))
+            except Exception as exc:
+                result = {"answer": f"The question could not be completed: {exc}", "error": True, "chunks": []}
     st.session_state.messages.append({"role": "assistant", "result": result})
     st.session_state.pending_question = None
     st.session_state.question_input_revision += 1

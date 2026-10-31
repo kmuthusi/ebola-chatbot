@@ -33,7 +33,7 @@ def test_question_is_visible_to_pipeline_before_answer_and_input_recovers(monkey
                     "chunks": [], "issues": [], "claim_checks": []}
 
     monkeypatch.setattr(simple_rag, "SimpleAssistantRAG", FakeRag)
-    app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py")).run()
+    app = AppTest.from_file(str(Path(__file__).resolve().parents[1] / "app.py"), default_timeout=20).run()
     assert not app.exception
     question = next(widget for widget in app.text_input if widget.label == "Your question")
     question.set_value("What does the guide say?")

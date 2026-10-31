@@ -140,6 +140,8 @@ with st.sidebar:
         st.session_state.rag = SimpleAssistantRAG(data_dir=data_dir, ollama_model=model)
         st.session_state.rag_settings = settings_key
         st.session_state.messages = []
+        st.session_state.pending_question = None
+        st.session_state.question_input_revision = st.session_state.get("question_input_revision", 0) + 1
     rag = st.session_state.rag
 
     try:
@@ -161,7 +163,7 @@ with st.sidebar:
                 st.write(pdf.name)
 
     st.divider()
-    if st.button("Refresh documents", disabled=not pdfs, use_container_width=True):
+    if st.button("Refresh documents", disabled=not pdfs or bool(st.session_state.pending_question), use_container_width=True):
         try:
             with st.spinner("Preparing the documents..."):
                 rag.index()
@@ -169,8 +171,9 @@ with st.sidebar:
         except Exception as exc:
             st.error(f"Could not refresh documents: {exc}")
 
-    if st.button("Clear conversation", use_container_width=True):
+    if st.button("Clear conversation", disabled=bool(st.session_state.pending_question), use_container_width=True):
         st.session_state.messages = []
+        st.session_state.question_input_revision += 1
         st.rerun()
 
     with st.expander("How to use this assistant"):
@@ -189,28 +192,43 @@ for message in st.session_state.messages:
         else:
             render_response(message["result"])
 
+pending_question = st.session_state.pending_question
+if pending_question:
+    with st.chat_message("assistant"):
+        st.write("Looking through the source documents...")
+
 with st.container(border=True):
     with st.form("question_form", clear_on_submit=True, border=False):
         prompt = st.text_input(
             "Your question",
             placeholder="Ask about Ebola or Marburg...",
             autocomplete="off",
-            disabled=not pdfs,
+            disabled=not pdfs or bool(pending_question),
+            key=f"question_input_{st.session_state.question_input_revision}",
         )
-        submitted = st.form_submit_button("Ask", type="primary", disabled=not pdfs, use_container_width=True)
+        submitted = st.form_submit_button("Ask", type="primary", disabled=not pdfs or bool(pending_question), use_container_width=True)
 
 if submitted and prompt.strip():
     previous_question = next(
         (message["content"] for message in reversed(st.session_state.messages) if message["role"] == "user"),
         None,
     )
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append({"role": "user", "content": prompt.strip()})
+    st.session_state.pending_question = {
+        "question": prompt.strip(), "previous_question": previous_question,
+        "top_k": top_k, "model": model,
+    }
+    st.rerun()
+
+if pending_question:
     try:
-        with st.spinner("Finding information in the documents..."):
-            result = rag.ask(SimpleAssistantRequest(
-                question=prompt, previous_question=previous_question, top_k=top_k, ollama_model=model,
-            ))
+        result = rag.ask(SimpleAssistantRequest(
+            question=pending_question["question"], previous_question=pending_question["previous_question"],
+            top_k=pending_question["top_k"], ollama_model=pending_question["model"],
+        ))
     except Exception as exc:
         result = {"answer": f"The question could not be completed: {exc}", "error": True, "chunks": []}
     st.session_state.messages.append({"role": "assistant", "result": result})
+    st.session_state.pending_question = None
+    st.session_state.question_input_revision += 1
     st.rerun()

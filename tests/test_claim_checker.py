@@ -122,6 +122,22 @@ def test_claim_examples_must_appear_in_supporting_quote(monkeypatch):
     ) == []
 
 
+def test_examples_in_second_sentence_of_same_cited_passage_are_allowed(monkeypatch):
+    evidence = [{"source": "guide.pdf", "page": 2,
+                 "text": "Symptoms can include fever and headache. Later, people may experience bleeding."}]
+    monkeypatch.setattr(claim_checker.ollama, "chat", lambda **kwargs: {
+        "message": {"content": json.dumps({"claims": [{
+            "id": 1, "verdict": "supported", "quote": "Symptoms can include fever and headache.",
+            "reason": "", "relevant": True,
+        }]})}
+    })
+    result = check_claims(
+        "Symptoms can include fever, headache, and bleeding [guide.pdf, page 2].",
+        evidence, "test", "What are the symptoms?",
+    )
+    assert result["passed"]
+
+
 def test_supported_facts_can_still_miss_question(monkeypatch):
     evidence = [{"source": "guide.pdf", "page": 2, "text": "The disease is severe. It is a form of Ebola disease."}]
     monkeypatch.setattr(claim_checker.ollama, "chat", lambda **kwargs: {

@@ -5,7 +5,7 @@ import os
 import re
 
 import ollama
-from query_planning import make_search_plan
+from query_planning import classification_target, make_search_plan
 
 DEFAULT_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "llama3.1:8b")
 
@@ -30,6 +30,9 @@ def _make_prompt(question: str, evidence: list[dict], feedback: str = "") -> str
         scope = ("Write exactly two simple, positive claims. First, use Source 1 to explain how the guidance treats the named activity; do not assert that every instance transmits infection. "
                  "Second, use Source 2 to explain the documented route of transmission. Put no extra sentence in either claim. "
                  "Do not discuss what the documents do not explicitly say. " )
+    elif classification_target(question) and evidence and evidence[0].get("is_definition"):
+        scope = ("State the category or type of the named entity from Source 1 in one short claim. "
+                 "Use the subject of the question and its definition; do not substitute an assessment of risk level or severity. ")
     elif plan.diagnosis and len(evidence) >= 2 and evidence[0].get("is_focused"):
         scope = "Write one short claim naming the preferred test method from Source 1, then one short claim naming the recommended specimen for a living patient from Source 2. "
     elif plan.broad:

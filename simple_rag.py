@@ -61,6 +61,17 @@ class SimpleAssistantRAG:
         candidates = self.store.search(effective_question, k=max(request.top_k, 25))
         anchors = []
         definition_hit = None
+        classification_hit = None
+        target = classification_target(effective_question)
+        if target and hasattr(self.store, "definition_search"):
+            definitions = self.store.definition_search(target, k=8)
+            if definitions:
+                question_terms = set(re.findall(r"[a-z]{4,}", effective_question.casefold()))
+                chosen = max(definitions, key=lambda item: len(
+                    question_terms & set(re.findall(r"[a-z]{4,}", item["source"].casefold()))
+                ))
+                classification_hit = {**chosen, "is_definition": True}
+                candidates.append(classification_hit)
         if plan.broad and hasattr(self.store, "definition_search"):
             definitions = self.store.definition_search(plan.subject, k=1)
             if definitions:
@@ -83,7 +94,7 @@ class SimpleAssistantRAG:
                     if (plan.broad or plan.exposure or plan.diagnosis) and hasattr(self.store, "expand_evidence"):
                         expanded_anchor = self.store.expand_evidence([anchor], question=facet_query)[0]
                         anchor = {**expanded_anchor, "text": focus_excerpt(expanded_anchor["text"], facet_query), "is_focused": True}
-                    anchors.append({**anchor, "facet": f"aspect_{facet_index}"})
+                    anchors.append({**anchor, "facet": f"aspect_{facet_index}", "facet_query": facet_query})
         original_sources = {hit.get("source") for hit in candidates}
         candidates = focus_on_matching_sources(plan, candidates)
         candidates = focus_on_direct_guidance(plan, candidates)
@@ -130,6 +141,10 @@ class SimpleAssistantRAG:
             evidence = [definition_hit, *(item for item in evidence if
                          (item.get("source"), item.get("page")) !=
                          (definition_hit.get("source"), definition_hit.get("page")))][:max(1, min(request.top_k, 8))]
+        if classification_hit is not None and pipeline["release"] == "grounded":
+            evidence = [classification_hit, *(item for item in evidence if
+                         (item.get("source"), item.get("page")) !=
+                         (classification_hit.get("source"), classification_hit.get("page")))][:max(1, min(request.top_k, 8))]
         if pipeline["release"] == "refusal":
             return {"answer": "I cannot find this in the source documents.", "status": "insufficient_context", "chunks": evidence, "issues": [], "claim_checks": []}
         if hasattr(self.store, "expand_evidence"):
@@ -152,11 +167,15 @@ class SimpleAssistantRAG:
             }
         checked = check_claims(answer, evidence, request.ollama_model, effective_question)
         if checked["passed"] and (plan.broad or plan.exposure) and not answer_covers_plan(plan, checked["claims"], evidence):
+            cited = {citation for claim in checked["claims"] if claim.get("passed")
+                     for citation in claim.get("citations", [])}
+            missing = [item["facet_query"] for item in evidence
+                       if item.get("facet_query") and (item.get("source"), item.get("page")) not in cited]
+            detail = "; ".join(missing) if missing else "requested parts"
             checked = {**checked, "passed": False,
-                       "issues": ["The checked claims do not cover the requested parts of the question."],
-                       "addresses_question": False, "missing_aspects": "requested parts"}
+                       "issues": [f"The checked claims do not cover: {detail}."],
+                       "addresses_question": False, "missing_aspects": detail}
         if not checked["passed"]:
-            target = classification_target(effective_question)
             if target and hasattr(self.store, "definition_search"):
                 definitions = self.store.definition_search(target, k=8)
                 if definitions:

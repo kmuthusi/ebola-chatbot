@@ -32,6 +32,7 @@ def test_broad_answer_must_cite_definition_and_available_aspects():
         {"source": "guide.pdf", "page": 1, "is_definition": True},
         {"source": "guide.pdf", "page": 2, "facet": "aspect_0"},
         {"source": "guide.pdf", "page": 3, "facet": "aspect_1"},
+        {"source": "guide.pdf", "page": 4, "facet": "aspect_2"},
     ]
     claims = [
         {"passed": True, "citations": [("guide.pdf", 1)]},
@@ -41,6 +42,8 @@ def test_broad_answer_must_cite_definition_and_available_aspects():
     assert not answer_covers_plan(plan, claims, evidence)
     claims[1]["citations"] = [("guide.pdf", 2)]
     claims[2]["citations"] = [("guide.pdf", 3)]
+    assert not answer_covers_plan(plan, claims, evidence)
+    claims.append({"passed": True, "citations": [("guide.pdf", 4)]})
     assert answer_covers_plan(plan, claims, evidence)
 
 

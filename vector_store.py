@@ -311,6 +311,16 @@ class VectorStore:
             compact = re.sub(r"\s+", " ", text)
             for sentence in re.split(r"(?<=[.!?])\s+", compact):
                 lower_sentence = sentence.casefold()
+                # Glossaries often define an entry with a colon instead of
+                # "is", including entries with an abbreviation in brackets.
+                heading = re.match(
+                    rf"^{re.escape(subject.casefold())}(?:\s+[a-z][a-z-]*){{0,3}}"
+                    r"(?:\s*\([^)]{1,30}\))?\s*:\s+(?:a|an|the)\b",
+                    lower_sentence,
+                )
+                if heading and 30 <= len(sentence) <= 380:
+                    matches.append((2.0, sentence, meta))
+                    break
                 definition = re.search(r"\b(?:is an?|are an?|refers to|means|defined as|is caused by|are caused by)\b", lower_sentence)
                 mentions = [match for match in topic.finditer(lower_sentence)
                             if definition and match.start() < definition.start()]

@@ -175,6 +175,38 @@ def test_classification_falls_back_to_exact_indexed_definition(monkeypatch):
     assert result["claim_checks"][0]["verdict"] == "source_text"
 
 
+def test_classification_definition_precedes_risk_score_passage(monkeypatch):
+    class ClassificationStore(FakeStore):
+        def search(self, question, k=30):
+            return [{"source": "assessment.pdf", "page": 1,
+                     "text": "The outbreak risk is high.", "score": .9}]
+
+        def definition_search(self, subject, k=8):
+            assert subject == "Example disease"
+            return [{"source": "assessment.pdf", "page": 9,
+                     "text": "Example disease is a form of viral illness.", "score": .9}]
+
+    monkeypatch.setattr(simple_rag, "VectorStore", ClassificationStore)
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "fingerprint", lambda self: "source-hash")
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "read_and_chunk", lambda self: [
+        {"source": "assessment.pdf", "page": 9, "text": "Example disease is a form of viral illness."}
+    ])
+    seen = []
+
+    def compose(question, evidence, model):
+        seen.append((evidence[0]["page"], evidence[0].get("is_definition")))
+        return "Example disease is a form of viral illness [assessment.pdf, page 9]."
+
+    monkeypatch.setattr(simple_rag, "compose_answer", compose)
+    monkeypatch.setattr(simple_rag, "check_claims", lambda *args: {
+        "passed": True, "issues": [], "claims": [{"original": "Example disease is a form of viral illness [assessment.pdf, page 9].",
+                                              "citations": [("assessment.pdf", 9)], "passed": True}],
+    })
+    result = SimpleAssistantRAG().ask(SimpleAssistantRequest("How does the assessment classify Example disease?"))
+    assert result["status"] == "machine_checked"
+    assert seen == [(9, True)]
+
+
 def test_orchestrator_repairs_rejected_claim_once(monkeypatch):
     monkeypatch.setattr(simple_rag, "VectorStore", FakeStore)
     monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "fingerprint", lambda self: "source-hash")

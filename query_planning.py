@@ -136,7 +136,7 @@ def answer_covers_plan(plan: SearchPlan, claims: list[dict], evidence: list[dict
         }
         cited_aspects = {facet for facet, page in aspects.items() if page in cited}
         return (len(accepted) >= 3 and bool(definitions & cited) and len(cited) >= 2
-                and len(cited_aspects) >= min(2, len(aspects)))
+                and bool(aspects) and len(cited_aspects) == len(aspects))
     if plan.exposure:
         activity = re.search(r"\bby\s+(.+?)\??$", plan.question, re.I)
         phrase = activity.group(1).strip(" ?.!").casefold() if activity else ""

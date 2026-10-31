@@ -3,27 +3,21 @@
     "case_id": "FIL-001",
     "domain": "overview",
     "question": "What is Bundibugyo virus disease?",
-    "passed_automatic_screen": false,
-    "status": "review_required",
-    "answer": "I could not check every claim against the retrieved documents. Please review the source excerpts or narrow the question.",
-    "missing_concepts": [
-      [
-        "Bundibugyo",
-        "BVD"
-      ],
-      [
-        "Ebola disease"
-      ]
-    ],
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Bundibugyo virus disease is a severe and often fatal form of Ebola disease, caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1].",
+    "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
-    "issues": [
-      "Claim 3 was unsupported by the automated check."
-    ],
+    "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "Bundibugyo virus disease (BVD) is a severe and often fatal form of Ebola disease.",
+        "text": "Bundibugyo virus disease is a severe and often fatal form of Ebola disease, caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus .",
+        "original": "Bundibugyo virus disease is a severe and often fatal form of Ebola disease, caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1].",
         "citations": [
           [
             "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
@@ -32,11 +26,16 @@
         ],
         "verdict": "supported",
         "quote": "Bundibugyo virus disease (BVD) is a severe and often fatal form of Ebola disease, caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus.",
-        "reason": ""
-      },
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
       {
-        "id": 2,
-        "text": "BVD is caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus.",
+        "id": 1,
+        "text": "Bundibugyo virus disease is a severe and often fatal form of Ebola disease, caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus .",
+        "original": "Bundibugyo virus disease is a severe and often fatal form of Ebola disease, caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1].",
         "citations": [
           [
             "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
@@ -45,45 +44,30 @@
         ],
         "verdict": "supported",
         "quote": "Bundibugyo virus disease (BVD) is a severe and often fatal form of Ebola disease, caused by the Bundibugyo virus (BDBV), a species of Orthoebolavirus.",
-        "reason": ""
-      },
-      {
-        "id": 3,
-        "text": "BVD is characterized by non-specific symptoms including fever, fatigue, muscle aches, headache, and sore throat, which may be followed by vomiting, diarrhea, and rash.",
-        "citations": [
-          [
-            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
-            9
-          ]
-        ],
-        "verdict": "unsupported",
-        "quote": "",
-        "reason": "The text does not mention the symptoms of BVD in the order specified in the claim, and it does not mention the symptoms of BVD as being non-specific."
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
-      [
-        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
-        9
-      ],
-      [
-        "9789240125605-eng.pdf",
-        10
-      ],
-      [
-        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-        10
-      ],
       [
         "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
         1
       ],
       [
-        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
-        9
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        12
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        34
+      ],
+      [
+        "clinical-management-filovirus-executive-summary-2026.pdf",
+        7
       ]
     ],
-    "seconds": 6.69,
+    "seconds": 45.72,
     "clinical_review": "pending"
   },
   {
@@ -92,28 +76,19 @@
     "question": "How can direct contact transmit Ebola disease?",
     "passed_automatic_screen": true,
     "status": "machine_checked",
-    "answer": "Here are the factual sentences that answer the question:\n\n* Direct contact with the blood, secretions, organs, or other body fluids of an infected person can transmit Ebola disease. [ipc-ebola-marburg-2026.pdf, page 11]\n* Direct exposure to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE can increase the risk of human-to-human transmission. [ipc-ebola-marburg-2026.pdf, page 37]\n* Exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE is a high-risk activity for transmission. [ipc-ebola-marburg-2026.pdf, page 37]",
+    "answer": "Direct contact with an infected person's blood and other body fluids can transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 37].\n\nDirect contact with infected animals, such as fruit bats, non-human primates, or other wild mammals, can transmit Ebola disease through zoonotic spillover events [surveillance-case-investigation-contact-tracing-filovirus-2026.pdf, page 13].\n\nDirect contact with an infected person's blood and other body fluids can transmit Ebola disease through contact with broken skin or mucous membranes [ipc-ebola-marburg-2026.pdf, page 37].\n\nDirect contact with an infected person's blood and other body fluids can also transmit Ebola disease through indirect contact with surfaces and materials contaminated with these fluids [ipc-ebola-marburg-2026.pdf, page 12].\n\nDirect contact with an infected person's blood and other body fluids can also transmit Ebola disease through splashes or sprays of blood or other body fluids [ipc-ebola-marburg-2026.pdf, page 37].",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 1,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "Direct contact with the blood, secretions, organs, or other body fluids of an infected person can transmit Ebola disease.",
-        "citations": [
-          [
-            "ipc-ebola-marburg-2026.pdf",
-            11
-          ]
-        ],
-        "verdict": "supported",
-        "quote": "The virus is transmitted from wild animals (such as fruit bats, porcupines and non-human primates) to people; it then spreads in the human population through direct contact with the blood, secretions, organs or other body fluids of infected people, and with surfaces and materials (e.g. bedding, clothing) contaminated with these fluids (7).",
-        "reason": ""
-      },
-      {
-        "id": 2,
-        "text": "Direct exposure to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE can increase the risk of human-to-human transmission.",
+        "text": "Direct contact with an infected person's blood and other body fluids can transmit Ebola disease .",
+        "original": "Direct contact with an infected person's blood and other body fluids can transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 37].",
         "citations": [
           [
             "ipc-ebola-marburg-2026.pdf",
@@ -121,12 +96,31 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "Examples of high-risk activities include: 1. exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;",
-        "reason": ""
+        "quote": "Infection prevention and control guideline for Ebola and Marburg diseases \n18\nHuman-to-human transmission occurs via exposure to blood and other body fluids via \ncontact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 3,
-        "text": "Exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE is a high-risk activity for transmission.",
+        "text": "Direct contact with infected animals, such as fruit bats, non-human primates, or other wild mammals, can transmit Ebola disease through zoonotic spillover events .",
+        "original": "Direct contact with infected animals, such as fruit bats, non-human primates, or other wild mammals, can transmit Ebola disease through zoonotic spillover events [surveillance-case-investigation-contact-tracing-filovirus-2026.pdf, page 13].",
+        "citations": [
+          [
+            "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+            13
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Human outbreaks of Ebola disease and MVD typically begin with a zoonotic spillover event – the \nintroduction of the virus from an infected animal into a human host. Documented routes of \nzoonotic transmission include:\n• direct contact with infected fruit bats (hunting, handling, consumption of bat meat)\n• direct contact with non-human primates (gorillas, chimpanzees) or other wild mammals \n(duikers) that have themselves been infected through exposure to bats or their excretions",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Direct contact with an infected person's blood and other body fluids can transmit Ebola disease through contact with broken skin or mucous membranes .",
+        "original": "Direct contact with an infected person's blood and other body fluids can transmit Ebola disease through contact with broken skin or mucous membranes [ipc-ebola-marburg-2026.pdf, page 37].",
         "citations": [
           [
             "ipc-ebola-marburg-2026.pdf",
@@ -134,8 +128,92 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "Examples of high-risk activities include: 1. exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;",
-        "reason": ""
+        "quote": "exposure of broken skin to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 4,
+        "text": "Direct contact with an infected person's blood and other body fluids can also transmit Ebola disease through indirect contact with surfaces and materials contaminated with these fluids .",
+        "original": "Direct contact with an infected person's blood and other body fluids can also transmit Ebola disease through indirect contact with surfaces and materials contaminated with these fluids [ipc-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Once a person is infected with the virus, it can spread through human-to-human transmission via direct contact (through broken skin or mucous membranes) with the blood, secretions, organs or other body fluids of infected people, or through indirect contact with surfaces and materials (e.g. bedding, clothing) contaminated with any of these fluids",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 5,
+        "text": "Direct contact with an infected person's blood and other body fluids can also transmit Ebola disease through splashes or sprays of blood or other body fluids .",
+        "original": "Direct contact with an infected person's blood and other body fluids can also transmit Ebola disease through splashes or sprays of blood or other body fluids [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Human-to-human transmission occurs via exposure to blood and other body fluids via contact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Direct contact with an infected person's blood and other body fluids can transmit Ebola disease .",
+        "original": "Direct contact with an infected person's blood and other body fluids can transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Infection prevention and control guideline for Ebola and Marburg diseases \n18\nHuman-to-human transmission occurs via exposure to blood and other body fluids via \ncontact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Direct contact with an infected person's body fluids, such as through exposure to vomit, can also transmit Ebola disease .",
+        "original": "Direct contact with an infected person's body fluids, such as through exposure to vomit, can also transmit Ebola disease [ipc-ebola-marburg-2026.pdf, page 34].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            34
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Human-to-human transmission occurs via contact (direct or indirect, also known as fomite transmission) \nwith an infected person during their communicable period. Since splashes/sprays of blood and other body \nfluids can occur (e.g. from vomiting), both the skin and the mucous membranes should be protected from \ndirect/indirect contact.",
+        "reason": "",
+        "relevant": true,
+        "passed": false
+      },
+      {
+        "id": 3,
+        "text": "Direct contact with infected animals, such as fruit bats, non-human primates, or other wild mammals, can transmit Ebola disease through zoonotic spillover events .",
+        "original": "Direct contact with infected animals, such as fruit bats, non-human primates, or other wild mammals, can transmit Ebola disease through zoonotic spillover events [surveillance-case-investigation-contact-tracing-filovirus-2026.pdf, page 13].",
+        "citations": [
+          [
+            "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+            13
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Human outbreaks of Ebola disease and MVD typically begin with a zoonotic spillover event – the \nintroduction of the virus from an infected animal into a human host. Documented routes of \nzoonotic transmission include:\n• direct contact with infected fruit bats (hunting, handling, consumption of bat meat)\n• direct contact with non-human primates (gorillas, chimpanzees) or other wild mammals \n(duikers) that have themselves been infected through exposure to bats or their excretions",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
@@ -152,15 +230,27 @@
         35
       ],
       [
-        "ipc-ebola-marburg-2026.pdf",
-        11
+        "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+        13
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        89
+        51
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        49
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        12
+      ],
+      [
+        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+        9
       ]
     ],
-    "seconds": 6.9,
+    "seconds": 19.12,
     "clinical_review": "pending"
   },
   {
@@ -169,15 +259,35 @@
     "question": "Is laboratory testing recommended for asymptomatic contacts of Ebola disease?",
     "passed_automatic_screen": true,
     "status": "machine_checked",
-    "answer": "Here is the answer to the question:\n\n* Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended. [diagnostic-testing-ebola-marburg-2026.pdf, page 8]",
+    "answer": "Contacts should be monitored for the development of symptoms for 21 days following their most recent exposure and tested only if they meet the case definition [diagnostic-testing-ebola-marburg-2026.pdf, page 13].\n\nLaboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 1,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [
       {
-        "id": 1,
-        "text": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended.",
+        "id": 2,
+        "text": "Contacts should be monitored for the development of symptoms for 21 days following their most recent exposure and tested only if they meet the case definition .",
+        "original": "Contacts should be monitored for the development of symptoms for 21 days following their most recent exposure and tested only if they meet the case definition [diagnostic-testing-ebola-marburg-2026.pdf, page 13].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            13
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Contacts should be monitored for the development of symptoms for 21 days following their most recent exposure and tested only if they meet the case definition.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended .",
+        "original": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
         "citations": [
           [
             "diagnostic-testing-ebola-marburg-2026.pdf",
@@ -186,32 +296,88 @@
         ],
         "verdict": "supported",
         "quote": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended, including for travel or point-of-entry screening purposes.",
-        "reason": ""
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended for travel or point-of-entry screening purposes .",
+        "original": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended for travel or point-of-entry screening purposes [diagnostic-testing-ebola-marburg-2026.pdf, page 13].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            13
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Laboratory testing of asymptomatic individuals, including for travel-related requests or point-of-entry screening, is therefore not recommended.",
+        "reason": "",
+        "relevant": true,
+        "passed": false
+      },
+      {
+        "id": 2,
+        "text": "Contacts should be monitored for the development of symptoms for 21 days following their most recent exposure and tested only if they meet the case definition .",
+        "original": "Contacts should be monitored for the development of symptoms for 21 days following their most recent exposure and tested only if they meet the case definition [diagnostic-testing-ebola-marburg-2026.pdf, page 13].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            13
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Contacts should be monitored for the development of symptoms for 21 days following their most recent exposure and tested only if they meet the case definition.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended .",
+        "original": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Laboratory testing of asymptomatic individuals, including asymptomatic contacts, is not recommended, including for travel or point-of-entry screening purposes.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
       [
         "diagnostic-testing-ebola-marburg-2026.pdf",
-        20
-      ],
-      [
-        "diagnostic-testing-ebola-marburg-2026.pdf",
         8
       ],
       [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        13
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        9
+      ],
+      [
         "ipc-ebola-marburg-2026.pdf",
-        50
+        17
       ],
       [
-        "diagnostic-testing-ebola-marburg-2026.pdf",
-        14
+        "cdc-mmwr-bundibugyo-outbreak-august-2026.pdf",
+        2
       ],
       [
-        "diagnostic-testing-ebola-marburg-2026.pdf",
-        14
+        "ipc-ebola-marburg-2026.pdf",
+        59
       ]
     ],
-    "seconds": 1.88,
+    "seconds": 12.43,
     "clinical_review": "pending"
   },
   {
@@ -220,15 +386,19 @@
     "question": "What specimen is recommended for laboratory testing of a living patient with suspected Ebola disease?",
     "passed_automatic_screen": true,
     "status": "machine_checked",
-    "answer": "Here are the factual sentences answering the question:\n\n* The recommended specimen type to collect for testing for orthoebolaviruses is whole blood (EDTA blood) for living patients. [diagnostic-testing-ebola-marburg-2026.pdf, page 8]\n* Capillary blood collected by heel-prick may be considered in infants when venous blood collection is not feasible, although reduced sensitivity should be anticipated. [diagnostic-testing-ebola-marburg-2026.pdf, page 15]\n* Dry blood swabs may be used but may lead to a significant loss of sensitivity. [diagnostic-testing-ebola-marburg-2026.pdf, page 15]",
+    "answer": "The recommended specimen type to collect for testing for orthoebolaviruses is whole blood (EDTA blood) for living patients [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "The recommended specimen type to collect for testing for orthoebolaviruses is whole blood (EDTA blood) for living patients.",
+        "text": "The recommended specimen type to collect for testing for orthoebolaviruses is whole blood (EDTA blood) for living patients .",
+        "original": "The recommended specimen type to collect for testing for orthoebolaviruses is whole blood (EDTA blood) for living patients [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
         "citations": [
           [
             "diagnostic-testing-ebola-marburg-2026.pdf",
@@ -236,40 +406,38 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "The recommended specimen type to collect for testing for orthoebolaviruses and northomarburgviruses is whole blood (EDTA blood) for living patients, and oral swab for deceased individuals.",
-        "reason": ""
-      },
+        "quote": "The recommended specimen type to collect for testing for orthoebolaviruses and orthomarburgviruses is whole blood (EDTA blood) for living patients, and oral swab for deceased individuals.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
       {
-        "id": 2,
-        "text": "Capillary blood collected by heel-prick may be considered in infants when venous blood collection is not feasible, although reduced sensitivity should be anticipated.",
+        "id": 1,
+        "text": "The recommended specimen type to collect for testing for orthoebolaviruses is whole blood (EDTA blood) for living patients .",
+        "original": "The recommended specimen type to collect for testing for orthoebolaviruses is whole blood (EDTA blood) for living patients [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
         "citations": [
           [
             "diagnostic-testing-ebola-marburg-2026.pdf",
-            15
+            8
           ]
         ],
         "verdict": "supported",
-        "quote": "Capillary blood collected by heel-prick may be considered in infants when venous blood collection is not feasible, although reduced sensitivity should be anticipated.",
-        "reason": ""
-      },
-      {
-        "id": 3,
-        "text": "Dry blood swabs may be used but may lead to a significant loss of sensitivity.",
-        "citations": [
-          [
-            "diagnostic-testing-ebola-marburg-2026.pdf",
-            15
-          ]
-        ],
-        "verdict": "supported",
-        "quote": "Dry blood swabs may be used but may lead to a significant loss of sensitivity.",
-        "reason": ""
+        "quote": "The recommended specimen type to collect for testing for orthoebolaviruses and orthomarburgviruses is whole blood (EDTA blood) for living patients, and oral swab for deceased individuals.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
       [
         "diagnostic-testing-ebola-marburg-2026.pdf",
-        16
+        8
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        13
       ],
       [
         "diagnostic-testing-ebola-marburg-2026.pdf",
@@ -280,15 +448,11 @@
         20
       ],
       [
-        "clinical-management-filovirus-2026.pdf",
-        20
-      ],
-      [
         "diagnostic-testing-ebola-marburg-2026.pdf",
-        8
+        9
       ]
     ],
-    "seconds": 5.45,
+    "seconds": 4.83,
     "clinical_review": "pending"
   },
   {
@@ -297,15 +461,19 @@
     "question": "What specimen is recommended for testing a deceased person for Ebola disease?",
     "passed_automatic_screen": true,
     "status": "machine_checked",
-    "answer": "Here are the factual sentences answering the question:\n\n* For a deceased individual, the recommended specimen for testing is an oral swab, placed in viral transport medium. [diagnostic-testing-ebola-marburg-2026.pdf, page 15]\n* The oral swab should be placed in the inner cheeks and/or gum (crevicular gingival fluids) to collect oral fluid. [diagnostic-testing-ebola-marburg-2026.pdf, page 15]\n* The preferred swab type is nylon flocked swabs. [diagnostic-testing-ebola-marburg-2026.pdf, page 15]",
+    "answer": "An oral swab, placed in viral transport medium, is recommended for testing a deceased person for Ebola disease [diagnostic-testing-ebola-marburg-2026.pdf, page 15].",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "For a deceased individual, the recommended specimen for testing is an oral swab, placed in viral transport medium.",
+        "text": "An oral swab, placed in viral transport medium, is recommended for testing a deceased person for Ebola disease .",
+        "original": "An oral swab, placed in viral transport medium, is recommended for testing a deceased person for Ebola disease [diagnostic-testing-ebola-marburg-2026.pdf, page 15].",
         "citations": [
           [
             "diagnostic-testing-ebola-marburg-2026.pdf",
@@ -313,12 +481,17 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "NAAT Oral swab, placed in viral transport medium\nThe preferred swab type is nylon flocked swabs. Swabbing should aim to collect oral fluid from the inner cheeks and/or gum (crevicular gingival fluids).",
-        "reason": ""
-      },
+        "quote": "NAAT Oral swab, placed in viral transport medium",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
       {
-        "id": 2,
-        "text": "The oral swab should be placed in the inner cheeks and/or gum (crevicular gingival fluids) to collect oral fluid.",
+        "id": 1,
+        "text": "An oral swab, placed in viral transport medium, is recommended for testing a deceased person for Ebola disease .",
+        "original": "An oral swab, placed in viral transport medium, is recommended for testing a deceased person for Ebola disease [diagnostic-testing-ebola-marburg-2026.pdf, page 15].",
         "citations": [
           [
             "diagnostic-testing-ebola-marburg-2026.pdf",
@@ -326,79 +499,89 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "The preferred swab type is nylon flocked swabs. Swabbing should aim to collect oral fluid from the inner cheeks and/or gum (crevicular gingival fluids).",
-        "reason": ""
-      },
-      {
-        "id": 3,
-        "text": "The preferred swab type is nylon flocked swabs.",
-        "citations": [
-          [
-            "diagnostic-testing-ebola-marburg-2026.pdf",
-            15
-          ]
-        ],
-        "verdict": "supported",
-        "quote": "The preferred swab type is nylon flocked swabs.",
-        "reason": ""
+        "quote": "NAAT Oral swab, placed in viral transport medium",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
       [
         "diagnostic-testing-ebola-marburg-2026.pdf",
-        16
+        8
       ],
       [
         "diagnostic-testing-ebola-marburg-2026.pdf",
         15
       ],
       [
-        "cdc-mmwr-bundibugyo-outbreak-august-2026.pdf",
-        1
+        "ipc-ebola-marburg-2026.pdf",
+        147
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        20
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        232
+        37
       ],
       [
-        "ipc-ebola-marburg-2026.pdf",
-        145
+        "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+        29
       ]
     ],
-    "seconds": 5.85,
+    "seconds": 4.26,
     "clinical_review": "pending"
   },
   {
     "case_id": "FIL-006",
     "domain": "diagnostics",
     "question": "What assay type does the diagnostic guidance prefer for confirming Ebola disease?",
-    "passed_automatic_screen": false,
-    "status": "review_required",
-    "answer": "I could not check every claim against the retrieved documents. Please review the source excerpts or narrow the question.",
-    "missing_concepts": [
-      [
-        "NAAT",
-        "nucleic acid amplification"
-      ]
-    ],
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+    "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
-    "issues": [
-      "Claim 1 was unsupported by the automated check."
-    ],
+    "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "The preferred assay type to confirm an infection with an orthoebolavirus is nucleic acid amplification testing (NAAT) .",
+        "text": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) .",
+        "original": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
         "citations": [
           [
             "diagnostic-testing-ebola-marburg-2026.pdf",
-            20
+            8
           ]
         ],
-        "verdict": "unsupported",
-        "quote": "",
-        "reason": "The cited excerpt does not mention nucleic acid amplification testing (NAAT) as the preferred assay type to confirm an infection with an orthoebolavirus."
+        "verdict": "supported",
+        "quote": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT).",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) .",
+        "original": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT).",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
@@ -412,102 +595,149 @@
       ],
       [
         "diagnostic-testing-ebola-marburg-2026.pdf",
-        9
-      ],
-      [
-        "diagnostic-testing-ebola-marburg-2026.pdf",
         22
       ],
       [
         "diagnostic-testing-ebola-marburg-2026.pdf",
-        2
+        12
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        10
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        38
       ]
     ],
-    "seconds": 2.13,
+    "seconds": 4.77,
     "clinical_review": "pending"
   },
   {
     "case_id": "FIL-007",
     "domain": "clinical_management",
     "question": "What does the clinical guideline say about monitoring patients with suspected filovirus disease?",
-    "passed_automatic_screen": false,
-    "status": "review_required",
-    "answer": "I could not check every claim against the retrieved documents. Please review the source excerpts or narrow the question.",
-    "missing_concepts": [
-      [
-        "systematic",
-        "structured"
-      ],
-      [
-        "monitoring",
-        "reassessment"
-      ]
-    ],
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition [clinical-management-filovirus-2026.pdf, page 9].\n\nSystematic and frequent monitoring of haemodynamic status, fluid input and output, and signs of fluid overload is required to titrate and individualize fluid therapy for patients with suspected or confirmed filovirus disease with ongoing GI [clinical-management-filovirus-2026.pdf, page 26].",
+    "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 1,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
-    "issues": [
-      "Claim 2 has no document and page citation."
-    ],
+    "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition.",
+        "text": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition .",
+        "original": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition [clinical-management-filovirus-2026.pdf, page 9].",
         "citations": [
           [
-            "clinical-management-filovirus-executive-summary-2026.pdf",
-            8
+            "clinical-management-filovirus-2026.pdf",
+            9
           ]
-        ]
-      },
-      {
-        "id": 2,
-        "text": "Continuous and frequent reassessment is critical given the often rapid and unpredictable progression of filovirus disease.",
-        "citations": []
+        ],
+        "verdict": "supported",
+        "quote": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 3,
-        "text": "Monitoring should begin at first clinical contact and continue throughout all phases of care.",
+        "text": "Systematic and frequent monitoring of haemodynamic status, fluid input and output, and signs of fluid overload is required to titrate and individualize fluid therapy for patients with suspected or confirmed filovirus disease with ongoing GI .",
+        "original": "Systematic and frequent monitoring of haemodynamic status, fluid input and output, and signs of fluid overload is required to titrate and individualize fluid therapy for patients with suspected or confirmed filovirus disease with ongoing GI [clinical-management-filovirus-2026.pdf, page 26].",
         "citations": [
           [
             "clinical-management-filovirus-2026.pdf",
-            17
+            26
           ]
-        ]
+        ],
+        "verdict": "supported",
+        "quote": "Systematic and frequent monitoring of haemodynamic status, fluid input and output, and signs of fluid overload is required to titrate and individualize fluid therapy",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition .",
+        "original": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition [clinical-management-filovirus-2026.pdf, page 9].",
+        "citations": [
+          [
+            "clinical-management-filovirus-2026.pdf",
+            9
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Systematic patient monitoring should be established for patients with suspected or confirmed filovirus disease, using structured and documented clinical assessment at regular intervals, with frequency adapted to patient condition",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
-        "id": 4,
-        "text": "Core measurements typically include vital signs (temperature, respiratory rate, heart rate, blood pressure and oxygen saturation), neurological status, fluid balance, and assessment of gastrointestinal symptoms, hydration and perfusion.",
+        "id": 2,
+        "text": "Laboratory monitoring should be performed based on clinical assessment, rather than on routine testing .",
+        "original": "Laboratory monitoring should be performed based on clinical assessment, rather than on routine testing [clinical-management-filovirus-2026.pdf, page 19].",
         "citations": [
           [
             "clinical-management-filovirus-2026.pdf",
-            17
+            19
           ]
-        ]
+        ],
+        "verdict": "supported",
+        "quote": "WHO recommends that for patients with suspected or confirmed filovirus disease, systematic laboratory monitoring be performed based on clinical assessment, rather than on routine testing",
+        "reason": "",
+        "relevant": true,
+        "passed": false
+      },
+      {
+        "id": 3,
+        "text": "Systematic and frequent monitoring of haemodynamic status, fluid input and output, and signs of fluid overload is required to titrate and individualize fluid therapy for patients with suspected or confirmed filovirus disease with ongoing GI .",
+        "original": "Systematic and frequent monitoring of haemodynamic status, fluid input and output, and signs of fluid overload is required to titrate and individualize fluid therapy for patients with suspected or confirmed filovirus disease with ongoing GI [clinical-management-filovirus-2026.pdf, page 26].",
+        "citations": [
+          [
+            "clinical-management-filovirus-2026.pdf",
+            26
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Systematic and frequent monitoring of haemodynamic status, fluid input and output, and signs of fluid overload is required to titrate and individualize fluid therapy",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
-      [
-        "clinical-management-filovirus-executive-summary-2026.pdf",
-        8
-      ],
-      [
-        "clinical-management-filovirus-2026.pdf",
-        18
-      ],
-      [
-        "clinical-management-filovirus-2026.pdf",
-        17
-      ],
       [
         "clinical-management-filovirus-2026.pdf",
         9
       ],
       [
+        "clinical-management-filovirus-2026.pdf",
+        19
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        26
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        34
+      ],
+      [
+        "clinical-management-filovirus-2026.pdf",
+        48
+      ],
+      [
         "clinical-management-filovirus-executive-summary-2026.pdf",
-        6
+        7
       ]
     ],
-    "seconds": 3.22,
+    "seconds": 16.75,
     "clinical_review": "pending"
   },
   {
@@ -516,15 +746,19 @@
     "question": "Which intravenous fluid does the clinical guideline recommend for acute resuscitation in filovirus disease?",
     "passed_automatic_screen": true,
     "status": "machine_checked",
-    "answer": "Here are the factual sentences:\n\n* The clinical guideline recommends balanced crystalloids (such as Ringer's lactate) for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease. [clinical-management-filovirus-2026.pdf, page 30]\n* This recommendation applies to children and adults, including pregnant women, with sepsis, septic shock, and/or dehydration. [clinical-management-filovirus-2026.pdf, page 30]\n* The guideline suggests that 0.9% sodium chloride may be preferred in patients with filovirus disease who have trauma, including traumatic brain injury. [clinical-management-filovirus-2026.pdf, page 30]",
+    "answer": "The clinical guideline recommends balanced crystalloids, such as Ringer’s lactate, for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease [clinical-management-filovirus-2026.pdf, page 30].\n\nThis recommendation applies to children and adults, including pregnant women, who have sepsis, septic shock, and/or dehydration [clinical-management-filovirus-2026.pdf, page 30].",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 1,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "The clinical guideline recommends balanced crystalloids (such as Ringer's lactate) for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease.",
+        "text": "The clinical guideline recommends balanced crystalloids, such as Ringer’s lactate, for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease .",
+        "original": "The clinical guideline recommends balanced crystalloids, such as Ringer’s lactate, for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease [clinical-management-filovirus-2026.pdf, page 30].",
         "citations": [
           [
             "clinical-management-filovirus-2026.pdf",
@@ -533,11 +767,14 @@
         ],
         "verdict": "supported",
         "quote": "WHO recommends balanced crystalloids (such as Ringer’ s lactate) rather than 0.9% sodium chloride for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease.",
-        "reason": ""
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 2,
-        "text": "This recommendation applies to children and adults, including pregnant women, with sepsis, septic shock, and/or dehydration.",
+        "text": "This recommendation applies to children and adults, including pregnant women, who have sepsis, septic shock, and/or dehydration .",
+        "original": "This recommendation applies to children and adults, including pregnant women, who have sepsis, septic shock, and/or dehydration [clinical-management-filovirus-2026.pdf, page 30].",
         "citations": [
           [
             "clinical-management-filovirus-2026.pdf",
@@ -545,21 +782,60 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "• This applies to children and adults including pregnant women, who have sepsis, septic shock and/or dehydration.",
-        "reason": ""
+        "quote": "This applies to children and adults including pregnant women, who have sepsis, septic shock and/or dehydration.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "The clinical guideline recommends balanced crystalloids, such as Ringer’s lactate, for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease .",
+        "original": "The clinical guideline recommends balanced crystalloids, such as Ringer’s lactate, for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease [clinical-management-filovirus-2026.pdf, page 30].",
+        "citations": [
+          [
+            "clinical-management-filovirus-2026.pdf",
+            30
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "WHO recommends balanced crystalloids (such as Ringer’ s lactate) rather than 0.9% sodium chloride for acute intravenous fluid resuscitation in patients with suspected or confirmed filovirus disease.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "This recommendation applies to children and adults, including pregnant women, who have sepsis, septic shock, and/or dehydration .",
+        "original": "This recommendation applies to children and adults, including pregnant women, who have sepsis, septic shock, and/or dehydration [clinical-management-filovirus-2026.pdf, page 30].",
+        "citations": [
+          [
+            "clinical-management-filovirus-2026.pdf",
+            30
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "This applies to children and adults including pregnant women, who have sepsis, septic shock and/or dehydration.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 3,
-        "text": "The guideline suggests that 0.9% sodium chloride may be preferred in patients with filovirus disease who have trauma, including traumatic brain injury.",
+        "text": "9% sodium chloride may be preferred in patients with filovirus disease that have trauma, including traumatic brain injury .",
+        "original": "9% sodium chloride may be preferred in patients with filovirus disease that have trauma, including traumatic brain injury [clinical-management-filovirus-2026.pdf, page 30].",
         "citations": [
           [
             "clinical-management-filovirus-2026.pdf",
             30
           ]
         ],
-        "verdict": "supported",
-        "quote": "• Conditions where 0.9% sodium chloride may be preferred include patients with filovirus disease that have trauma including traumatic brain injury.",
-        "reason": ""
+        "verdict": "unsupported",
+        "quote": "",
+        "reason": "The text states that 0.9% sodium chloride may be preferred in patients with filovirus disease that have trauma, including traumatic brain injury, but does not mention 9% sodium chloride.",
+        "relevant": true,
+        "passed": false
       }
     ],
     "cited_sources": [
@@ -569,22 +845,10 @@
       ],
       [
         "clinical-management-filovirus-2026.pdf",
-        10
-      ],
-      [
-        "clinical-management-filovirus-executive-summary-2026.pdf",
-        6
-      ],
-      [
-        "clinical-management-filovirus-2026.pdf",
-        25
-      ],
-      [
-        "clinical-management-filovirus-2026.pdf",
-        26
+        48
       ]
     ],
-    "seconds": 5.5,
+    "seconds": 12.89,
     "clinical_review": "pending"
   },
   {
@@ -593,15 +857,19 @@
     "question": "What does the IPC guideline say about isolating patients with suspected Ebola disease?",
     "passed_automatic_screen": true,
     "status": "machine_checked",
-    "answer": "Here are the relevant factual statements:\n\n* Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers. [ipc-ebola-marburg-2026.pdf, page 48]\n* Ideally, isolation of individuals with suspected or confirmed EBOD or MARD should be done in single-occupancy patient rooms. [ipc-ebola-marburg-2026.pdf, page 48]\n* Cohorting of suspected and confirmed cases is not advised, and if cohorting is required, suspected patients should be kept separate from confirmed patients. [ipc-ebola-marburg-2026.pdf, page 48]",
+    "answer": "Patients with suspected Ebola disease should be isolated, preferably in a single-patient room [ipc-ebola-marburg-2026.pdf, page 48].\n\nIf sufficient single-occupancy isolation rooms are unavailable, suspected patients should be cohort separately from confirmed patients [ipc-ebola-marburg-2026.pdf, page 48].\n\nIsolation areas should follow a unidirectional flow to encourage movement of personnel and equipment from 'clean' to 'dirty' zones [ipc-ebola-marburg-2026.pdf, page 48].",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers.",
+        "text": "Patients with suspected Ebola disease should be isolated, preferably in a single-patient room .",
+        "original": "Patients with suspected Ebola disease should be isolated, preferably in a single-patient room [ipc-ebola-marburg-2026.pdf, page 48].",
         "citations": [
           [
             "ipc-ebola-marburg-2026.pdf",
@@ -610,11 +878,14 @@
         ],
         "verdict": "supported",
         "quote": "Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers.",
-        "reason": ""
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 2,
-        "text": "Ideally, isolation of individuals with suspected or confirmed EBOD or MARD should be done in single-occupancy patient rooms.",
+        "text": "If sufficient single-occupancy isolation rooms are unavailable, suspected patients should be cohort separately from confirmed patients .",
+        "original": "If sufficient single-occupancy isolation rooms are unavailable, suspected patients should be cohort separately from confirmed patients [ipc-ebola-marburg-2026.pdf, page 48].",
         "citations": [
           [
             "ipc-ebola-marburg-2026.pdf",
@@ -622,12 +893,15 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "Ideally, isolation of individuals with suspected or confirmed EBOD or MARD should be done in single-occupancy patient rooms.",
-        "reason": ""
+        "quote": "If sufficient single-occupancy isolation rooms are unavailable, and cohorting is required, cohort suspected patients separate from confirmed patients.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 3,
-        "text": "Cohorting of suspected and confirmed cases is not advised, and if cohorting is required, suspected patients should be kept separate from confirmed patients.",
+        "text": "Isolation areas should follow a unidirectional flow to encourage movement of personnel and equipment from 'clean' to 'dirty' zones .",
+        "original": "Isolation areas should follow a unidirectional flow to encourage movement of personnel and equipment from 'clean' to 'dirty' zones [ipc-ebola-marburg-2026.pdf, page 48].",
         "citations": [
           [
             "ipc-ebola-marburg-2026.pdf",
@@ -635,81 +909,160 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "therefore cohorting of suspected and confirmed cases is not advised.\n ◦ If sufficient single-occupancy isolation rooms are unavailable, and cohorting is required, cohort suspected patients separate from confirmed patients.",
-        "reason": ""
+        "quote": "Isolation areas should follow a unidirectional flow to encourage movement of personnel and equipment from “clean” to “dirty” zones and not vice-versa.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Patients with suspected Ebola disease should be isolated, preferably in a single-patient room .",
+        "original": "Patients with suspected Ebola disease should be isolated, preferably in a single-patient room [ipc-ebola-marburg-2026.pdf, page 48].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            48
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Patients with suspected or confirmed Ebola disease or Marburg disease should be isolated, preferably in a single-patient room, and appropriate PPE should be worn by health and care workers.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "If sufficient single-occupancy isolation rooms are unavailable, suspected patients should be cohort separately from confirmed patients .",
+        "original": "If sufficient single-occupancy isolation rooms are unavailable, suspected patients should be cohort separately from confirmed patients [ipc-ebola-marburg-2026.pdf, page 48].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            48
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "If sufficient single-occupancy isolation rooms are unavailable, and cohorting is required, cohort suspected patients separate from confirmed patients.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Isolation areas should follow a unidirectional flow to encourage movement of personnel and equipment from 'clean' to 'dirty' zones .",
+        "original": "Isolation areas should follow a unidirectional flow to encourage movement of personnel and equipment from 'clean' to 'dirty' zones [ipc-ebola-marburg-2026.pdf, page 48].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            48
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Isolation areas should follow a unidirectional flow to encourage movement of personnel and equipment from “clean” to “dirty” zones and not vice-versa.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
-      [
-        "ipc-ebola-marburg-2026.pdf",
-        48
-      ],
       [
         "ipc-ebola-marburg-2026.pdf",
         49
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        15
+        48
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        17
+        45
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        15
+        23
+      ],
+      [
+        "clinical-management-filovirus-executive-summary-2026.pdf",
+        7
       ]
     ],
-    "seconds": 5.71,
+    "seconds": 7.92,
     "clinical_review": "pending"
   },
   {
     "case_id": "FIL-010",
     "domain": "infection_prevention",
     "question": "What extra protective equipment does the IPC guideline specify for cleaners during Ebola care?",
-    "passed_automatic_screen": false,
-    "status": "review_required",
-    "answer": "I could not check every claim against the retrieved documents. Please review the source excerpts or narrow the question.",
-    "missing_concepts": [
-      [
-        "heavy-duty",
-        "utility gloves"
-      ],
-      [
-        "waterproof boots",
-        "boots"
-      ]
-    ],
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Cleaners/hygienists should wear heavy-duty (utility) gloves, heavy-duty aprons, and waterproof boots [ipc-ebola-marburg-2026.pdf, page 91].",
+    "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
-    "issues": [
-      "No document and page citations found in answer."
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Cleaners/hygienists should wear heavy-duty (utility) gloves, heavy-duty aprons, and waterproof boots .",
+        "original": "Cleaners/hygienists should wear heavy-duty (utility) gloves, heavy-duty aprons, and waterproof boots [ipc-ebola-marburg-2026.pdf, page 91].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            91
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Cleaners/hygienists should wear the same PPE recommended for other health and care workers, with the exception that 1) the outer pair of gloves should be heavy-duty (utility) gloves; 2) aprons should be heavy duty; and 3) their shoes should be waterproof boots.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
     ],
-    "claim_checks": [],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Cleaners/hygienists should wear heavy-duty (utility) gloves, heavy-duty aprons, and waterproof boots .",
+        "original": "Cleaners/hygienists should wear heavy-duty (utility) gloves, heavy-duty aprons, and waterproof boots [ipc-ebola-marburg-2026.pdf, page 91].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            91
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Cleaners/hygienists should wear the same PPE recommended for other health and care workers, with the exception that 1) the outer pair of gloves should be heavy-duty (utility) gloves; 2) aprons should be heavy duty; and 3) their shoes should be waterproof boots.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
     "cited_sources": [
       [
         "ipc-ebola-marburg-2026.pdf",
-        129
+        18
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        52
+        91
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        64
+        92
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        4
+        44
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        15
+        74
       ]
     ],
-    "seconds": 0.66,
+    "seconds": 5.17,
     "clinical_review": "pending"
   },
   {
@@ -718,37 +1071,112 @@
     "question": "How should public health advice for Bundibugyo disease in camp settings be adapted?",
     "passed_automatic_screen": true,
     "status": "machine_checked",
-    "answer": "Here are the factual sentences answering the question:\n\n* Public health advice for Bundibugyo disease in camp settings should be adapted to the local context. [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1]\n* Adaptation should be done in consultation with camp authorities, displaced populations, and host communities. [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 1]",
+    "answer": "Public health advice for Bundibugyo disease in camp settings should be adapted to reflect the realities, priorities, and capacities of the communities where it is applied [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].\n\nAdaptation should involve working together with affected and host communities to identify practical, locally acceptable, and culturally appropriate solutions that reduce risks while protecting dignity, social cohesion, and access to essent [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].\n\nConsiderations for adaptation should include local living conditions, available services, security and access constraints, patterns of population movement, and the availability of referral systems and health systems [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "Public health advice for Bundibugyo disease in camp settings should be adapted to the local context.",
+        "text": "Public health advice for Bundibugyo disease in camp settings should be adapted to reflect the realities, priorities, and capacities of the communities where it is applied .",
+        "original": "Public health advice for Bundibugyo disease in camp settings should be adapted to reflect the realities, priorities, and capacities of the communities where it is applied [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].",
         "citations": [
           [
             "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-            1
+            2
           ]
         ],
         "verdict": "supported",
-        "quote": "This public health advice should be adapted to the local context in consultation with camp authorities, displaced populations and host communities.",
-        "reason": ""
+        "quote": "Public health advice should always reflect the realities, priorities and capacities of the communities where it is applied (1, 2).",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 2,
-        "text": "Adaptation should be done in consultation with camp authorities, displaced populations, and host communities.",
+        "text": "Adaptation should involve working together with affected and host communities to identify practical, locally acceptable, and culturally appropriate solutions that reduce risks while protecting dignity, social cohesion, and access to essent .",
+        "original": "Adaptation should involve working together with affected and host communities to identify practical, locally acceptable, and culturally appropriate solutions that reduce risks while protecting dignity, social cohesion, and access to essent [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].",
         "citations": [
           [
             "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-            1
+            2
           ]
         ],
         "verdict": "supported",
-        "quote": "This public health advice should be adapted to the local context in consultation with camp authorities, displaced populations and host communities.",
-        "reason": ""
+        "quote": "Community engagement is essential to identify practical, locally acceptable and culturally appropriate solutions that reduce risks while protecting dignity, social cohesion and access to essential services.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Considerations for adaptation should include local living conditions, available services, security and access constraints, patterns of population movement, and the availability of referral systems and health systems .",
+        "original": "Considerations for adaptation should include local living conditions, available services, security and access constraints, patterns of population movement, and the availability of referral systems and health systems [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            2
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "authorities and partners should consider the following circumstances. Context and living conditions• local living conditions and available services, according to Sphere standards (8)• security and access constraints• patterns of population movement within and between camps, host communities and across borders • how to ensure and promote hand hygiene facilities in all social gathering places, near toilets, near water points, food distribution points, etc.• availability of referral systems and health systems.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Public health advice for Bundibugyo disease in camp settings should be adapted to reflect the realities, priorities, and capacities of the communities where it is applied .",
+        "original": "Public health advice for Bundibugyo disease in camp settings should be adapted to reflect the realities, priorities, and capacities of the communities where it is applied [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            2
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Public health advice should always reflect the realities, priorities and capacities of the communities where it is applied (1, 2).",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Adaptation should involve working together with affected and host communities to identify practical, locally acceptable, and culturally appropriate solutions that reduce risks while protecting dignity, social cohesion, and access to essent .",
+        "original": "Adaptation should involve working together with affected and host communities to identify practical, locally acceptable, and culturally appropriate solutions that reduce risks while protecting dignity, social cohesion, and access to essent [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            2
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Community engagement is essential to identify practical, locally acceptable and culturally appropriate solutions that reduce risks while protecting dignity, social cohesion and access to essential services.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Considerations for adaptation should include local living conditions, available services, security and access constraints, patterns of population movement, and the availability of referral systems and health systems .",
+        "original": "Considerations for adaptation should include local living conditions, available services, security and access constraints, patterns of population movement, and the availability of referral systems and health systems [who-bundibugyo-public-health-advice-camp-settings-2026.pdf, page 2].",
+        "citations": [
+          [
+            "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+            2
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "authorities and partners should consider the following circumstances. Context and living conditions• local living conditions and available services, according to Sphere standards (8)• security and access constraints• patterns of population movement within and between camps, host communities and across borders • how to ensure and promote hand hygiene facilities in all social gathering places, near toilets, near water points, food distribution points, etc.• availability of referral systems and health systems.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
@@ -758,49 +1186,43 @@
       ],
       [
         "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-        10
+        2
       ],
       [
         "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-        1
+        4
       ],
       [
         "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-        3
+        6
       ],
       [
-        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-        1
+        "surveillance-case-investigation-contact-tracing-filovirus-2026.pdf",
+        18
       ]
     ],
-    "seconds": 3.33,
+    "seconds": 8.77,
     "clinical_review": "pending"
   },
   {
     "case_id": "FIL-012",
     "domain": "risk_assessment",
     "question": "How does the WHO Bundibugyo risk assessment classify Bundibugyo virus disease?",
-    "passed_automatic_screen": false,
-    "status": "review_required",
-    "answer": "I could not check every claim against the retrieved documents. Please review the source excerpts or narrow the question.",
-    "missing_concepts": [
-      [
-        "form of Ebola disease",
-        "Ebola disease"
-      ],
-      [
-        "Bundibugyo"
-      ]
-    ],
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Bundibugyo virus disease is a form of Ebola disease [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].\n\nBundibugyo virus disease is a severe viral haemorrhagic disease [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].\n\nBundibugyo virus disease is caused by Bundibugyo virus [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+    "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
     "anchor_source_retrieved": true,
-    "issues": [
-      "Claim 3 was unsupported by the automated check."
-    ],
+    "issues": [],
     "claim_checks": [
       {
         "id": 1,
-        "text": "Bundibugyo virus disease is a severe viral haemorrhagic disease caused by Bundibugyo virus (BDBV), a member of the Orthoebolavirus genus in the Filoviridae family.",
+        "text": "Bundibugyo virus disease is a form of Ebola disease .",
+        "original": "Bundibugyo virus disease is a form of Ebola disease [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
         "citations": [
           [
             "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
@@ -808,12 +1230,15 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "Bundibugyo virus disease (BVD) , a form of Ebola disease, is a severe viral haemorrhagic disease caused by \nBundibugyo virus (BDBV), a member of the Orthoebolavirus genus in the Filoviridae family.",
-        "reason": ""
+        "quote": "a form of Ebola disease",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 2,
-        "text": "The disease is considered a zoonotic pathogen, although its natural reservoir has not been conclusively established.",
+        "text": "Bundibugyo virus disease is a severe viral haemorrhagic disease .",
+        "original": "Bundibugyo virus disease is a severe viral haemorrhagic disease [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
         "citations": [
           [
             "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
@@ -821,21 +1246,76 @@
           ]
         ],
         "verdict": "supported",
-        "quote": "BDBV is considered a zoonotic pathogen, although its natural reservoir has not been conclusively established.",
-        "reason": ""
+        "quote": "a severe viral haemorrhagic disease",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       },
       {
         "id": 3,
-        "text": "The CFR of Bundibugyo virus disease is approximately 25-36%.",
+        "text": "Bundibugyo virus disease is caused by Bundibugyo virus .",
+        "original": "Bundibugyo virus disease is caused by Bundibugyo virus [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
         "citations": [
           [
-            "9789240125605-eng.pdf",
-            10
+            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+            9
           ]
         ],
-        "verdict": "unsupported",
-        "quote": "",
-        "reason": "The cited text only mentions that the CFR is approximately 25-36%, but does not specify that it is for Bundibugyo virus disease."
+        "verdict": "supported",
+        "quote": "caused by Bundibugyo virus",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Bundibugyo virus disease is a form of Ebola disease .",
+        "original": "Bundibugyo virus disease is a form of Ebola disease [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+        "citations": [
+          [
+            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+            9
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "a form of Ebola disease",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Bundibugyo virus disease is a severe viral haemorrhagic disease .",
+        "original": "Bundibugyo virus disease is a severe viral haemorrhagic disease [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+        "citations": [
+          [
+            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+            9
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "a severe viral haemorrhagic disease",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Bundibugyo virus disease is caused by Bundibugyo virus .",
+        "original": "Bundibugyo virus disease is caused by Bundibugyo virus [who-bundibugyo-risk-assessment-drc-v4-2026.pdf, page 9].",
+        "citations": [
+          [
+            "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
+            9
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "caused by Bundibugyo virus",
+        "reason": "",
+        "relevant": true,
+        "passed": true
       }
     ],
     "cited_sources": [
@@ -844,23 +1324,11 @@
         9
       ],
       [
-        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
-        10
-      ],
-      [
-        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
-        20
-      ],
-      [
-        "9789240125605-eng.pdf",
-        10
-      ],
-      [
-        "who-bundibugyo-risk-assessment-drc-v4-2026.pdf",
-        21
+        "ipc-ebola-marburg-2026.pdf",
+        119
       ]
     ],
-    "seconds": 6.01,
+    "seconds": 5.12,
     "clinical_review": "pending"
   },
   {
@@ -872,32 +1340,620 @@
     "answer": "I cannot find this in the source documents.",
     "missing_concepts": [],
     "prohibited_phrases_found": [],
+    "answer_complete": false,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": false,
     "anchor_source_retrieved": true,
     "issues": [],
     "claim_checks": [],
+    "candidate_claim_checks": [],
     "cited_sources": [
       [
-        "clinical-management-filovirus-executive-summary-2026.pdf",
-        9
+        "who-bundibugyo-public-health-advice-camp-settings-2026.pdf",
+        1
       ],
       [
         "ipc-ebola-marburg-2026.pdf",
-        97
+        52
       ],
       [
-        "diagnostic-testing-ebola-marburg-2026.pdf",
-        31
+        "ipc-ebola-marburg-2026.pdf",
+        137
       ],
       [
-        "diagnostic-testing-ebola-marburg-2026.pdf",
-        30
-      ],
-      [
-        "clinical-management-filovirus-2026.pdf",
-        65
+        "ipc-ebola-marburg-2026.pdf",
+        115
       ]
     ],
-    "seconds": 0.39,
+    "seconds": 1.46,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-014",
+    "domain": "transmission",
+    "question": "Can I get Ebola by shaking hands?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "During an Ebola or Marburg outbreak, greetings by touching, such as shaking hands, are described as an unsafe practice [ipc-ebola-marburg-2026.pdf, page 148].\n\nPerson-to-person transmission occurs through contact with blood and other body fluids [ipc-ebola-marburg-2026.pdf, page 37].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 2,
+    "all_shown_claims_checked": true,
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "During an Ebola or Marburg outbreak, greetings by touching, such as shaking hands, are described as an unsafe practice .",
+        "original": "During an Ebola or Marburg outbreak, greetings by touching, such as shaking hands, are described as an unsafe practice [ipc-ebola-marburg-2026.pdf, page 148].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            148
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "greetings by touching, such as shaking hands",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Person-to-person transmission occurs through contact with blood and other body fluids .",
+        "original": "Person-to-person transmission occurs through contact with blood and other body fluids [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "exposure to blood and other body fluids via contact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Shaking hands with someone who has Ebola can increase the risk of infection, as it involves contact with body fluids .",
+        "original": "Shaking hands with someone who has Ebola can increase the risk of infection, as it involves contact with body fluids [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Infection prevention and control guideline for Ebola and Marburg diseases \n18\nHuman-to-human transmission occurs via exposure to blood and other body fluids via \ncontact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids\nCertain high-risk activities increase the risk of human-to-human transmission. Examples of high-risk activities \ninclude:\n1. exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the \nabsence of appropriate PPE;\n2. exposure of broken skin to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;\n3. needlestick/sharps injuries with equipment contamin",
+        "reason": "",
+        "relevant": true,
+        "passed": false
+      },
+      {
+        "id": 2,
+        "text": "Community members and leaders identified greetings by touching, such as shaking hands, as one of the most difficult practices to give up during an Ebola outbreak .",
+        "original": "Community members and leaders identified greetings by touching, such as shaking hands, as one of the most difficult practices to give up during an Ebola outbreak [ipc-ebola-marburg-2026.pdf, page 148].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            148
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "When community leaders, religious leaders, community members and community health- and care-\nworker supervisors were asked which unsafe practice was the most difficult to give up, they most \nfrequently cited dead-body management and greetings by touching, such as shaking hands (194, 196).",
+        "reason": "",
+        "relevant": true,
+        "passed": false
+      }
+    ],
+    "cited_sources": [
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        148
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        37
+      ]
+    ],
+    "seconds": 8.3,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-015",
+    "domain": "diagnostics",
+    "question": "How is Ebola virus disease diagnosed?",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "The preferred test method for diagnosing Ebola virus disease is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].\n\nFor living patients, the recommended specimen for testing is whole blood [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "The preferred test method for diagnosing Ebola virus disease is nucleic acid amplification testing (NAAT) .",
+        "original": "The preferred test method for diagnosing Ebola virus disease is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT).",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "For living patients, the recommended specimen for testing is whole blood .",
+        "original": "For living patients, the recommended specimen for testing is whole blood [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The recommended specimen type to collect for testing for orthoebolaviruses and orthomarburgviruses is whole blood (EDTA blood) for living patients, and oral swab for deceased individuals.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "The preferred test method for diagnosing Ebola virus disease is nucleic acid amplification testing (NAAT) .",
+        "original": "The preferred test method for diagnosing Ebola virus disease is nucleic acid amplification testing (NAAT) [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The preferred assay type to confirm an infection with an orthoebolavirus or an orthomarburgvirus is nucleic acid amplification testing (NAAT).",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "For living patients, the recommended specimen for testing is whole blood .",
+        "original": "For living patients, the recommended specimen for testing is whole blood [diagnostic-testing-ebola-marburg-2026.pdf, page 8].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            8
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "The recommended specimen type to collect for testing for orthoebolaviruses and orthomarburgviruses is whole blood (EDTA blood) for living patients, and oral swab for deceased individuals.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        8
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        8
+      ]
+    ],
+    "seconds": 4.28,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-016",
+    "domain": "overview",
+    "question": "Tell me about Marburg",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Marburg disease is a highly virulent disease that causes haemorrhagic fever [ipc-ebola-marburg-2026.pdf, page 12].\n\nMarburg disease symptoms are non-specific and can include fever, headache, lethargy, and aching muscles or joints [diagnostic-testing-ebola-marburg-2026.pdf, page 12].\n\nMarburg disease has a case fatality rate of up to 88% [ipc-ebola-marburg-2026.pdf, page 12].\n\nMarburg disease transmission patterns often show seasonal surges with multiple, short, independent chains of human-to-human transmission [ipc-ebola-marburg-2026.pdf, page 34].\n\nHigh-quality supportive care for Marburg disease can reduce mortality [clinical-management-filovirus-executive-summary-2026.pdf, page 7].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Marburg disease is a highly virulent disease that causes haemorrhagic fever .",
+        "original": "Marburg disease is a highly virulent disease that causes haemorrhagic fever [ipc-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Marburg disease (MARD): A highly virulent disease that causes haemorrhagic fever, with a case fatality rate of up to 88%",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Marburg disease symptoms are non-specific and can include fever, headache, lethargy, and aching muscles or joints .",
+        "original": "Marburg disease symptoms are non-specific and can include fever, headache, lethargy, and aching muscles or joints [diagnostic-testing-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "fever, headache, lethargy, anorexia/loss of appetite, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing and diarrhoea",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Marburg disease has a case fatality rate of up to 88% .",
+        "original": "Marburg disease has a case fatality rate of up to 88% [ipc-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Marburg disease (MARD): A highly virulent disease that causes haemorrhagic fever, with a case fatality rate of up to 88%",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 4,
+        "text": "Marburg disease transmission patterns often show seasonal surges with multiple, short, independent chains of human-to-human transmission .",
+        "original": "Marburg disease transmission patterns often show seasonal surges with multiple, short, independent chains of human-to-human transmission [ipc-ebola-marburg-2026.pdf, page 34].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            34
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Once Orthomarburgvirus enters into the human population via zoonotic exposure, transmission patterns often show seasonal surges with multiple, short, independent chains of human-to-human transmission",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 5,
+        "text": "High-quality supportive care for Marburg disease can reduce mortality .",
+        "original": "High-quality supportive care for Marburg disease can reduce mortality [clinical-management-filovirus-executive-summary-2026.pdf, page 7].",
+        "citations": [
+          [
+            "clinical-management-filovirus-executive-summary-2026.pdf",
+            7
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "High-quality supportive care for filovirus disease can reduce mortality",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Marburg disease is a highly virulent disease that causes haemorrhagic fever .",
+        "original": "Marburg disease is a highly virulent disease that causes haemorrhagic fever [ipc-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Marburg disease (MARD): A highly virulent disease that causes haemorrhagic fever, with a case fatality rate of up to 88%",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Marburg disease symptoms are non-specific and can include fever, headache, lethargy, and aching muscles or joints .",
+        "original": "Marburg disease symptoms are non-specific and can include fever, headache, lethargy, and aching muscles or joints [diagnostic-testing-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "fever, headache, lethargy, anorexia/loss of appetite, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing and diarrhoea",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Marburg disease has a case fatality rate of up to 88% .",
+        "original": "Marburg disease has a case fatality rate of up to 88% [ipc-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Marburg disease (MARD): A highly virulent disease that causes haemorrhagic fever, with a case fatality rate of up to 88%",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 4,
+        "text": "Marburg disease transmission patterns often show seasonal surges with multiple, short, independent chains of human-to-human transmission .",
+        "original": "Marburg disease transmission patterns often show seasonal surges with multiple, short, independent chains of human-to-human transmission [ipc-ebola-marburg-2026.pdf, page 34].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            34
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Once Orthomarburgvirus enters into the human population via zoonotic exposure, transmission patterns often show seasonal surges with multiple, short, independent chains of human-to-human transmission",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 5,
+        "text": "High-quality supportive care for Marburg disease can reduce mortality .",
+        "original": "High-quality supportive care for Marburg disease can reduce mortality [clinical-management-filovirus-executive-summary-2026.pdf, page 7].",
+        "citations": [
+          [
+            "clinical-management-filovirus-executive-summary-2026.pdf",
+            7
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "High-quality supportive care for filovirus disease can reduce mortality",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        12
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        12
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        34
+      ],
+      [
+        "clinical-management-filovirus-executive-summary-2026.pdf",
+        7
+      ]
+    ],
+    "seconds": 8.14,
+    "clinical_review": "pending"
+  },
+  {
+    "case_id": "FIL-017",
+    "domain": "overview",
+    "question": "Tell me about Ebola",
+    "passed_automatic_screen": true,
+    "status": "machine_checked",
+    "answer": "Ebola disease is a severe, often fatal illness affecting humans and other primates, and is caused by different species [ipc-ebola-marburg-2026.pdf, page 11].\n\nSymptoms of Ebola include fever, headache, lethargy, anorexia, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing, and diarrhoea [diagnostic-testing-ebola-marburg-2026.pdf, page 12].\n\nHuman-to-human transmission of Ebola occurs via exposure to blood and other body fluids via contact, splashes, or sprays [ipc-ebola-marburg-2026.pdf, page 37].\n\nHigh-risk activities that increase the risk of human-to-human transmission of Ebola include exposure of mucous membranes or broken skin to the virus without proper protective equipment [ipc-ebola-marburg-2026.pdf, page 37].\n\nHigh-quality supportive care for Ebola can reduce mortality, but implementation of clinical interventions is complicated by resource availability [clinical-management-filovirus-executive-summary-2026.pdf, page 7].",
+    "missing_concepts": [],
+    "prohibited_phrases_found": [],
+    "answer_complete": true,
+    "unsupported_claim_count": 0,
+    "all_shown_claims_checked": true,
+    "anchor_source_retrieved": true,
+    "issues": [],
+    "claim_checks": [
+      {
+        "id": 1,
+        "text": "Ebola disease is a severe, often fatal illness affecting humans and other primates, and is caused by different species .",
+        "original": "Ebola disease is a severe, often fatal illness affecting humans and other primates, and is caused by different species [ipc-ebola-marburg-2026.pdf, page 11].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            11
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Ebola disease (EBOD): Formerly known as Ebola haemorrhagic fever, EBOD is a severe, often fatal illness affecting humans and other primates, and is caused by different species.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Symptoms of Ebola include fever, headache, lethargy, anorexia, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing, and diarrhoea .",
+        "original": "Symptoms of Ebola include fever, headache, lethargy, anorexia, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing, and diarrhoea [diagnostic-testing-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "fever, headache, lethargy, anorexia/loss of appetite, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing and diarrhoea.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Human-to-human transmission of Ebola occurs via exposure to blood and other body fluids via contact, splashes, or sprays .",
+        "original": "Human-to-human transmission of Ebola occurs via exposure to blood and other body fluids via contact, splashes, or sprays [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Human-to-human transmission occurs via exposure to blood and other body fluids via contact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 4,
+        "text": "High-risk activities that increase the risk of human-to-human transmission of Ebola include exposure of mucous membranes or broken skin to the virus without proper protective equipment .",
+        "original": "High-risk activities that increase the risk of human-to-human transmission of Ebola include exposure of mucous membranes or broken skin to the virus without proper protective equipment [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE; exposure of broken skin to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 5,
+        "text": "High-quality supportive care for Ebola can reduce mortality, but implementation of clinical interventions is complicated by resource availability .",
+        "original": "High-quality supportive care for Ebola can reduce mortality, but implementation of clinical interventions is complicated by resource availability [clinical-management-filovirus-executive-summary-2026.pdf, page 7].",
+        "citations": [
+          [
+            "clinical-management-filovirus-executive-summary-2026.pdf",
+            7
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "High-quality supportive care for filovirus disease can reduce mortality. Implementation of clinical interventions is complicated by resource availability.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "candidate_claim_checks": [
+      {
+        "id": 1,
+        "text": "Ebola disease is a severe, often fatal illness affecting humans and other primates, and is caused by different species .",
+        "original": "Ebola disease is a severe, often fatal illness affecting humans and other primates, and is caused by different species [ipc-ebola-marburg-2026.pdf, page 11].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            11
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Ebola disease (EBOD): Formerly known as Ebola haemorrhagic fever, EBOD is a severe, often fatal illness affecting humans and other primates, and is caused by different species.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 2,
+        "text": "Symptoms of Ebola include fever, headache, lethargy, anorexia, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing, and diarrhoea .",
+        "original": "Symptoms of Ebola include fever, headache, lethargy, anorexia, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing, and diarrhoea [diagnostic-testing-ebola-marburg-2026.pdf, page 12].",
+        "citations": [
+          [
+            "diagnostic-testing-ebola-marburg-2026.pdf",
+            12
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "fever, headache, lethargy, anorexia/loss of appetite, aching muscles or joints, stomach pain, difficulty swallowing, vomiting, difficulty breathing and diarrhoea.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 3,
+        "text": "Human-to-human transmission of Ebola occurs via exposure to blood and other body fluids via contact, splashes, or sprays .",
+        "original": "Human-to-human transmission of Ebola occurs via exposure to blood and other body fluids via contact, splashes, or sprays [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "Human-to-human transmission occurs via exposure to blood and other body fluids via contact (direct and/or indirect) and/or splashes or sprays of blood or other body fluids",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 4,
+        "text": "High-risk activities that increase the risk of human-to-human transmission of Ebola include exposure of mucous membranes or broken skin to the virus without proper protective equipment .",
+        "original": "High-risk activities that increase the risk of human-to-human transmission of Ebola include exposure of mucous membranes or broken skin to the virus without proper protective equipment [ipc-ebola-marburg-2026.pdf, page 37].",
+        "citations": [
+          [
+            "ipc-ebola-marburg-2026.pdf",
+            37
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "exposure of mucous membranes (e.g. eyes, mouth) to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE; exposure of broken skin to Orthoebolavirus/Orthomarburgvirus in the absence of appropriate PPE;",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      },
+      {
+        "id": 5,
+        "text": "High-quality supportive care for Ebola can reduce mortality, but implementation of clinical interventions is complicated by resource availability .",
+        "original": "High-quality supportive care for Ebola can reduce mortality, but implementation of clinical interventions is complicated by resource availability [clinical-management-filovirus-executive-summary-2026.pdf, page 7].",
+        "citations": [
+          [
+            "clinical-management-filovirus-executive-summary-2026.pdf",
+            7
+          ]
+        ],
+        "verdict": "supported",
+        "quote": "High-quality supportive care for filovirus disease can reduce mortality. Implementation of clinical interventions is complicated by resource availability.",
+        "reason": "",
+        "relevant": true,
+        "passed": true
+      }
+    ],
+    "cited_sources": [
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        11
+      ],
+      [
+        "diagnostic-testing-ebola-marburg-2026.pdf",
+        12
+      ],
+      [
+        "ipc-ebola-marburg-2026.pdf",
+        37
+      ],
+      [
+        "clinical-management-filovirus-executive-summary-2026.pdf",
+        7
+      ]
+    ],
+    "seconds": 9.46,
     "clinical_review": "pending"
   }
 ]

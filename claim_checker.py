@@ -255,7 +255,7 @@ def check_claims(answer: str, evidence: list[dict], model: str, question: str = 
         "A claim that something cannot happen, is safe, or does not spread needs an explicit statement about that same route or condition. "
         "Calling an activity unsafe is not by itself evidence that it always transmits infection. "
         "Do not infer a negative claim merely because a source lists other routes or conditions. "
-        "Every concrete example introduced by 'such as', 'including', or 'like' must be named in the supporting quote. "
+        "Every concrete example introduced by 'such as', 'including', or 'like' must be named in the cited excerpt. "
         "Mark relevant=false for a claim that only adds background, statistics, or another topic beyond what the question asks. "
         "Also decide whether the answer as a whole directly addresses the question using only the cited excerpts. "
         "If it gives related facts but misses the requested recommendation, classification, condition, or mechanism, "
@@ -329,8 +329,12 @@ def check_claims(answer: str, evidence: list[dict], model: str, question: str = 
         explicit_exclusion = bool(isinstance(quote, str) and re.search(
             r"\b(?:no|not|never|cannot|only|safe|doesn't|isn't|aren't|won't)\b", quote, re.I,
         ))
-        missing_examples = _unquoted_examples(claim["text"], quote if isinstance(quote, str) else "")
-        missing_list_items = _unquoted_list_items(claim["text"], quote if isinstance(quote, str) else "")
+        # A short verbatim quote can establish the core claim while a second
+        # sentence in the same cited passage names its examples. Check the
+        # full cited passage rather than rejecting that valid support.
+        cited_text = " ".join(excerpts)
+        missing_examples = _unquoted_examples(claim["text"], cited_text)
+        missing_list_items = _unquoted_list_items(claim["text"], cited_text)
         exposure_route_supported = _exposure_route_supported(claim["text"], quote if isinstance(quote, str) else "")
         specific_exposure_supported = _specific_exposure_supported(question, claim["text"], quote if isinstance(quote, str) else "")
         named_terms = {

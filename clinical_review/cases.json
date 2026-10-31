@@ -133,5 +133,23 @@
     "expected_concepts": [["NAAT", "nucleic acid amplification"], ["whole blood", "EDTA blood"]],
     "prohibited_phrases": ["symptoms alone confirm Ebola", "oral swab is preferred for living patients"],
     "anchor": {"source": "diagnostic-testing-ebola-marburg-2026.pdf", "page": 8, "quote": "whole blood (EDTA blood) for living patients"}
+  },
+  {
+    "id": "FIL-016",
+    "domain": "overview",
+    "question": "Tell me about Marburg",
+    "expected_behavior": "answer",
+    "expected_concepts": [["Marburg disease"], ["fever", "symptoms"], ["transmission", "exposure", "spread"], ["care", "treatment"]],
+    "prohibited_phrases": ["burn pits", "waste disposal", "not caused by a virus"],
+    "anchor": {"source": "ipc-ebola-marburg-2026.pdf", "page": 12, "quote": "Marburg disease (MARD): A highly virulent disease"}
+  },
+  {
+    "id": "FIL-017",
+    "domain": "overview",
+    "question": "Tell me about Ebola",
+    "expected_behavior": "answer",
+    "expected_concepts": [["Ebola disease"], ["fever", "symptoms"], ["transmission", "exposure", "spread"], ["care", "treatment"]],
+    "prohibited_phrases": ["burn pits", "waste disposal", "not caused by a virus"],
+    "anchor": {"source": "ipc-ebola-marburg-2026.pdf", "page": 11, "quote": "Ebola disease (EBOD): Formerly known as Ebola haemorrhagic fever"}
   }
 ]

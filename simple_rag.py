@@ -64,13 +64,13 @@ class SimpleAssistantRAG:
         if plan.broad and hasattr(self.store, "definition_search"):
             definitions = self.store.definition_search(plan.subject, k=1)
             if definitions:
-                definition_hit = {**definitions[0], "is_definition": True}
+                definition_hit = {**definitions[0], "is_definition": True, "facet": "definition"}
                 candidates.append(definition_hit)
                 anchors.append(definition_hit)
         facet_queries = corpus_facets(plan.subject, definition_hit["text"]) if plan.broad and definition_hit else plan.queries[1:]
         if facet_queries:
             seen = {(hit.get("source"), hit.get("page"), hit.get("text")) for hit in candidates}
-            for facet_query in facet_queries:
+            for facet_index, facet_query in enumerate(facet_queries):
                 facet_hits = self.store.search(facet_query, k=18)
                 facet_ranked = rerank_and_release(facet_query, facet_hits, intent="documents", max_passages=2)
                 if facet_ranked["release"] == "grounded":
@@ -83,7 +83,7 @@ class SimpleAssistantRAG:
                     if (plan.broad or plan.exposure or plan.diagnosis) and hasattr(self.store, "expand_evidence"):
                         expanded_anchor = self.store.expand_evidence([anchor], question=facet_query)[0]
                         anchor = {**expanded_anchor, "text": focus_excerpt(expanded_anchor["text"], facet_query), "is_focused": True}
-                    anchors.append(anchor)
+                    anchors.append({**anchor, "facet": f"aspect_{facet_index}"})
         original_sources = {hit.get("source") for hit in candidates}
         candidates = focus_on_matching_sources(plan, candidates)
         candidates = focus_on_direct_guidance(plan, candidates)
@@ -225,7 +225,7 @@ class SimpleAssistantRAG:
                         supported.extend(new_supported)
                         if new_supported:
                             evidence = repair_evidence
-                            if rechecked["passed"]:
+                            if rechecked["passed"] and answer_covers_plan(plan, supported, evidence):
                                 repaired_answer = "\n\n".join(claim["original"] for claim in supported)
                                 if not verify_answer(repaired_answer, evidence)["issues"]:
                                     return {"answer": repaired_answer, "status": "machine_checked", "issues": [],
@@ -239,11 +239,15 @@ class SimpleAssistantRAG:
                     if answer_covers_plan(plan, supported, evidence):
                         return {"answer": partial_answer, "status": "machine_checked", "issues": [],
                                 "claim_checks": supported, "candidate_claim_checks": checked["claims"], "chunks": evidence}
-                    return {
-                        "answer": partial_answer, "status": "partially_checked",
-                        "issues": checked["issues"], "claim_checks": supported,
-                        "candidate_claim_checks": checked["claims"], "chunks": evidence,
-                    }
+                    if not plan.broad:
+                        return {
+                            "answer": partial_answer, "status": "partially_checked",
+                            "issues": checked["issues"], "claim_checks": supported,
+                            "candidate_claim_checks": checked["claims"], "chunks": evidence,
+                        }
+                    # A few individually supported details can still be a
+                    # misleading overview when the definition or main aspects
+                    # are missing. Do not present them as an answer.
             return {
                 "answer": "I could not confirm this answer from the documents. Please check the source pages below or ask a more specific question.",
                 "status": "review_required", "issues": checked["issues"], "claim_checks": checked["claims"],

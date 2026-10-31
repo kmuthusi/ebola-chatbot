@@ -3,11 +3,20 @@
 import re
 import unicodedata
 from html import escape
+from pathlib import Path
 
 import streamlit as st
 
 from answer_formatting import format_answer_markdown
 from simple_rag import DEFAULT_MODEL, SimpleAssistantRAG, SimpleAssistantRequest
+
+
+def pipeline_revision() -> tuple[tuple[str, int], ...]:
+    """Invalidate displayed answers when retrieval or checking code changes."""
+    root = Path(__file__).resolve().parent
+    modules = ("simple_rag.py", "vector_store.py", "query_planning.py", "rag_pipeline.py",
+               "evidence_selector.py", "bounded_composer.py", "claim_checker.py", "verifier.py")
+    return tuple((name, (root / name).stat().st_mtime_ns) for name in modules)
 
 
 def equation_to_latex(equation: str) -> str:
@@ -126,7 +135,7 @@ with st.sidebar:
         model = st.text_input("Ollama answer model", value=DEFAULT_MODEL, autocomplete="off")
         top_k = st.number_input("Source passages to search", min_value=1, max_value=8, value=6, step=1)
 
-    settings_key = (data_dir, model)
+    settings_key = (data_dir, model, pipeline_revision())
     if st.session_state.get("rag_settings") != settings_key:
         st.session_state.rag = SimpleAssistantRAG(data_dir=data_dir, ollama_model=model)
         st.session_state.rag_settings = settings_key

@@ -8,6 +8,18 @@ def test_page_chunk_overlap_is_removed():
     assert joined.count("outer pair of gloves") == 1
     assert "Their footwear should be boots" in joined
 
+
+def test_definition_search_accepts_subject_repeated_before_definition():
+    store = object.__new__(VectorStore)
+    sentence = ("Example disease (ED): Formerly called Example fever, "
+                "Example disease is a severe illness affecting people.")
+    store._lexical_records = lambda: ([(sentence, {"source": "guide.pdf", "page": 11,
+                                                   "section": "body"}, {}, 12)], {}, 12)
+    found = store.definition_search("Example disease", k=1)
+    assert len(found) == 1
+    assert found[0]["source"] == "guide.pdf"
+    assert found[0]["text"].startswith("Example disease (ED):")
+
 def test_index_and_query(tmp_path):
     store = VectorStore(collection_name="test_coll", chroma_dir=str(tmp_path))
     raw = [{"source": "a.pdf", "page": 1, "text": "Ebola disease diagnostic testing uses laboratory methods."},

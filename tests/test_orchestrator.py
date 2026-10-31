@@ -127,6 +127,28 @@ def test_orchestrator_shows_only_checked_claims(monkeypatch):
     assert result["answer"] == "Supported fact [testing.pdf, page 3]."
 
 
+def test_broad_question_does_not_show_unrelated_partial_facts(monkeypatch):
+    monkeypatch.setattr(simple_rag, "VectorStore", FakeStore)
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "fingerprint", lambda self: "source-hash")
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "read_and_chunk", lambda self: [
+        {"source": "testing.pdf", "page": 3, "text": "A detail about staffing and waste management."}
+    ])
+    draft = "Staffing is discussed [testing.pdf, page 3].\n\nWaste management is discussed [testing.pdf, page 3]."
+    monkeypatch.setattr(simple_rag, "compose_answer", lambda *args: draft)
+    monkeypatch.setattr(simple_rag, "repair_answer", lambda *args: "I cannot find this in the source documents.")
+    monkeypatch.setattr(simple_rag, "check_claims", lambda *args: {
+        "passed": True, "issues": [], "claims": [
+            {"text": "Staffing is discussed", "original": "Staffing is discussed [testing.pdf, page 3].",
+             "citations": [("testing.pdf", 3)], "passed": True},
+            {"text": "Waste management is discussed", "original": "Waste management is discussed [testing.pdf, page 3].",
+             "citations": [("testing.pdf", 3)], "passed": True},
+        ],
+    })
+    result = SimpleAssistantRAG().ask(SimpleAssistantRequest("Tell me about Example"))
+    assert result["status"] == "review_required"
+    assert "Staffing is discussed" not in result["answer"]
+
+
 def test_classification_falls_back_to_exact_indexed_definition(monkeypatch):
     class DefinitionStore(FakeStore):
         def search(self, question, k=30):

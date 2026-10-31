@@ -314,7 +314,11 @@ class VectorStore:
                 definition = re.search(r"\b(?:is an?|are an?|refers to|means|defined as|is caused by|are caused by)\b", lower_sentence)
                 mentions = [match for match in topic.finditer(lower_sentence)
                             if definition and match.start() < definition.start()]
-                mention = mentions[-1] if mentions else None
+                # A definition often repeats the subject before its verb
+                # (for example, "Ebola disease ... Ebola ... is"). Keep the
+                # opening mention; the last one can be too far into a valid
+                # sentence and incorrectly fail the prefix check.
+                mention = mentions[0] if mentions else None
                 max_prefix = 250 if len(subject.split()) > 1 else 12
                 if not mention or mention.start() > max_prefix or len(sentence) > 380 or len(sentence) < 30:
                     continue

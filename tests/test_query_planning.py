@@ -26,6 +26,24 @@ def test_facets_follow_indexed_definition_for_any_subject():
     assert "how it works" in process[1]
 
 
+def test_broad_answer_must_cite_definition_and_available_aspects():
+    plan = make_search_plan("Tell me about Example disease")
+    evidence = [
+        {"source": "guide.pdf", "page": 1, "is_definition": True},
+        {"source": "guide.pdf", "page": 2, "facet": "aspect_0"},
+        {"source": "guide.pdf", "page": 3, "facet": "aspect_1"},
+    ]
+    claims = [
+        {"passed": True, "citations": [("guide.pdf", 1)]},
+        {"passed": True, "citations": [("guide.pdf", 5)]},
+        {"passed": True, "citations": [("guide.pdf", 6)]},
+    ]
+    assert not answer_covers_plan(plan, claims, evidence)
+    claims[1]["citations"] = [("guide.pdf", 2)]
+    claims[2]["citations"] = [("guide.pdf", 3)]
+    assert answer_covers_plan(plan, claims, evidence)
+
+
 def test_document_title_guides_focused_search_when_enough_matches_exist():
     plan = make_search_plan("Example treatment")
     hits = ([{"source": "clinical-management.pdf", "page": n, "text": "care"} for n in range(6)]

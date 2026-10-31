@@ -130,7 +130,13 @@ def answer_covers_plan(plan: SearchPlan, claims: list[dict], evidence: list[dict
     if plan.broad and plan.question.casefold().startswith(("tell me about", "explain", "describe", "overview")):
         definitions = {(item.get("source"), item.get("page")) for item in evidence if item.get("is_definition")}
         cited = {citation for claim in accepted for citation in claim.get("citations", [])}
-        return len(accepted) >= 3 and bool(definitions & cited) and len(cited) >= 2
+        aspects = {
+            item.get("facet"): (item.get("source"), item.get("page"))
+            for item in evidence if str(item.get("facet", "")).startswith("aspect_")
+        }
+        cited_aspects = {facet for facet, page in aspects.items() if page in cited}
+        return (len(accepted) >= 3 and bool(definitions & cited) and len(cited) >= 2
+                and len(cited_aspects) >= min(2, len(aspects)))
     if plan.exposure:
         activity = re.search(r"\bby\s+(.+?)\??$", plan.question, re.I)
         phrase = activity.group(1).strip(" ?.!").casefold() if activity else ""

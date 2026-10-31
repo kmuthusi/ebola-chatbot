@@ -8,9 +8,9 @@ from typing import Any
 
 from retrievers import DEFAULT_DATA_DIR, PDFDirectoryRetriever
 from vector_store import VectorStore
-from rag_pipeline import rerank_and_release
+from rag_pipeline import has_source_anchor, is_feedback_statement, rerank_and_release
 from query_planning import make_search_plan, corpus_facets, focus_on_matching_sources, focus_on_direct_guidance, focus_excerpt, answer_covers_plan, classification_target
-from evidence_selector import select_evidence, extractive_exposure_answer, compose_sourced_exposure_summary
+from evidence_selector import select_evidence, extractive_answer
 from bounded_composer import compose_answer, repair_answer
 from verifier import verify_answer
 from claim_checker import check_claims
@@ -54,12 +54,34 @@ class SimpleAssistantRAG:
 
     def ask(self, request: SimpleAssistantRequest) -> dict[str, Any]:
         effective_question = question_with_context(request.question, request.previous_question)
+        if is_feedback_statement(effective_question):
+            return {"answer": "I can answer questions about the indexed documents. Please ask about a topic they cover.",
+                    "status": "out_of_scope", "chunks": [], "issues": [], "claim_checks": []}
         fingerprint = self.sources.fingerprint()
         if not self.store.source_is_current(fingerprint):
             self.index(fingerprint)
         plan = make_search_plan(effective_question)
         candidates = self.store.search(effective_question, k=max(request.top_k, 25))
+        if not has_source_anchor(effective_question, candidates):
+            return {"answer": "I can answer questions about the indexed documents. Please ask about a topic they cover.",
+                    "status": "out_of_scope", "chunks": [], "issues": [], "claim_checks": []}
         anchors = []
+        comparison_evidence = []
+        if plan.comparison and hasattr(self.store, "definition_search"):
+            left, right = plan.comparison
+            comparative_hits = self.store.search(plan.queries[1], k=20)
+            for hit in comparative_hits:
+                content = re.sub(r"\s+", " ", hit["text"]).casefold()
+                if (re.search(rf"\b{re.escape(left.casefold())}\b", content)
+                        and re.search(rf"\b{re.escape(right.casefold())}\b", content)
+                        and re.search(r"\b(?:respectively|whereas|unlike|different|compared|versus)\b", content)):
+                    comparison_evidence.append({**hit, "comparison_source": True})
+                    break
+            for side in plan.comparison:
+                definitions = self.store.definition_search(side, k=1)
+                if definitions:
+                    comparison_evidence.append({**definitions[0], "comparison_side": side})
+            candidates.extend(comparison_evidence)
         definition_hit = None
         classification_hit = None
         target = classification_target(effective_question)
@@ -145,6 +167,8 @@ class SimpleAssistantRAG:
             evidence = [classification_hit, *(item for item in evidence if
                          (item.get("source"), item.get("page")) !=
                          (classification_hit.get("source"), classification_hit.get("page")))][:max(1, min(request.top_k, 8))]
+        if comparison_evidence and pipeline["release"] == "grounded":
+            evidence = comparison_evidence[:max(1, min(request.top_k, 8))]
         if pipeline["release"] == "refusal":
             return {"answer": "I cannot find this in the source documents.", "status": "insufficient_context", "chunks": evidence, "issues": [], "claim_checks": []}
         if hasattr(self.store, "expand_evidence"):
@@ -166,7 +190,7 @@ class SimpleAssistantRAG:
                 "status": "review_required", "issues": verified["issues"], "claim_checks": [], "chunks": evidence,
             }
         checked = check_claims(answer, evidence, request.ollama_model, effective_question)
-        if checked["passed"] and (plan.broad or plan.exposure) and not answer_covers_plan(plan, checked["claims"], evidence):
+        if checked["passed"] and (plan.broad or plan.exposure or plan.comparison) and not answer_covers_plan(plan, checked["claims"], evidence):
             cited = {citation for claim in checked["claims"] if claim.get("passed")
                      for citation in claim.get("citations", [])}
             missing = [item["facet_query"] for item in evidence
@@ -176,37 +200,6 @@ class SimpleAssistantRAG:
                        "issues": [f"The checked claims do not cover: {detail}."],
                        "addresses_question": False, "missing_aspects": detail}
         if not checked["passed"]:
-            if target and hasattr(self.store, "definition_search"):
-                definitions = self.store.definition_search(target, k=8)
-                if definitions:
-                    question_terms = set(re.findall(r"[a-z]{4,}", effective_question.casefold()))
-                    chosen = max(definitions, key=lambda item: len(
-                        question_terms & set(re.findall(r"[a-z]{4,}", item["source"].casefold()))
-                    ))
-                    source_statement = chosen["text"].strip().rstrip(". ")
-                    statement = re.sub(r"\s+([,.;:])", r"\1", source_statement)
-                    exact = f"{statement} [{chosen['source']}, page {chosen['page']}]."
-                    if statement and not verify_answer(exact, [chosen])["issues"]:
-                        citation = (chosen["source"], chosen["page"])
-                        source_pages = [chosen, *(item for item in evidence if
-                                         (item.get("source"), item.get("page")) != citation)]
-                        return {"answer": exact, "status": "machine_checked", "issues": [],
-                                "claim_checks": [{"id": 1, "text": statement, "original": exact,
-                                                  "citations": [citation], "quote": source_statement,
-                                                  "verdict": "source_text", "relevant": True, "passed": True}],
-                                "candidate_claim_checks": checked["claims"], "chunks": source_pages}
-            if plan.exposure:
-                summary = compose_sourced_exposure_summary(effective_question, evidence)
-                if summary and not verify_answer(summary, evidence)["issues"]:
-                    summary_check = check_claims(summary, evidence, request.ollama_model, effective_question)
-                    if summary_check["passed"] and answer_covers_plan(plan, summary_check["claims"], evidence):
-                        return {"answer": summary, "status": "machine_checked", "issues": [],
-                                "claim_checks": summary_check["claims"], "candidate_claim_checks": checked["claims"],
-                                "chunks": evidence}
-                extracted = extractive_exposure_answer(effective_question, evidence)
-                if extracted and not verify_answer(extracted, evidence)["issues"]:
-                    return {"answer": extracted, "status": "source_excerpts", "issues": [],
-                            "claim_checks": [], "candidate_claim_checks": checked["claims"], "chunks": evidence}
             supported = [claim for claim in checked["claims"] if claim.get("passed")]
             rejected = [claim for claim in checked["claims"] if claim.get("relevant", True) and not claim.get("passed") and claim.get("text")]
             if rejected or checked.get("addresses_question") is False:
@@ -252,13 +245,21 @@ class SimpleAssistantRAG:
                                             "chunks": evidence}
                 except Exception:
                     pass
+            if plan.exposure and len(evidence) >= 2:
+                excerpts = extractive_answer(effective_question, evidence[:2], plan.queries[1:3])
+                if excerpts and not verify_answer(excerpts, evidence)["issues"]:
+                    excerpt_check = check_claims(excerpts, evidence, request.ollama_model, effective_question)
+                    if excerpt_check["passed"] and answer_covers_plan(plan, excerpt_check["claims"], evidence):
+                        return {"answer": excerpts, "status": "machine_checked", "issues": [],
+                                "claim_checks": excerpt_check["claims"],
+                                "candidate_claim_checks": checked["claims"], "chunks": evidence}
             if supported:
                 partial_answer = "\n\n".join(claim["original"] for claim in supported)
                 if not verify_answer(partial_answer, evidence)["issues"]:
                     if answer_covers_plan(plan, supported, evidence):
                         return {"answer": partial_answer, "status": "machine_checked", "issues": [],
                                 "claim_checks": supported, "candidate_claim_checks": checked["claims"], "chunks": evidence}
-                    if not plan.broad:
+                    if not plan.broad and not plan.comparison:
                         return {
                             "answer": partial_answer, "status": "partially_checked",
                             "issues": checked["issues"], "claim_checks": supported,

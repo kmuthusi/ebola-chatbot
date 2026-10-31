@@ -19,6 +19,10 @@ _ASPECT_TERMS = {
     "symptoms": "signs clinical presentation illness",
     "spread": "transmission direct contact exposure prevention",
     "transmitted": "transmission direct contact exposure prevention",
+    "deadly": "case fatality rate mortality death outcomes",
+    "lethal": "case fatality rate mortality death outcomes",
+    "fatality": "case fatality rate mortality death outcomes",
+    "mortality": "case fatality rate mortality death outcomes",
 }
 
 
@@ -30,6 +34,25 @@ class SearchPlan:
     queries: tuple[str, ...]
     exposure: bool = False
     diagnosis: bool = False
+    comparison: tuple[str, str] | None = None
+
+
+def comparison_subjects(question: str) -> tuple[str, str] | None:
+    """Extract the two named subjects of a direct comparison question."""
+    clean = re.sub(r"\s+", " ", question).strip(" ?.! ")
+    patterns = (
+        r"(?:how\s+does|how\s+do)\s+(.+?)\s+(?:differ|vary)\s+from\s+(.+)",
+        r"(?:what(?:'s| is| are)?\s+the\s+differences?\s+between)\s+(.+?)\s+and\s+(.+)",
+        r"(?:compare|contrast)\s+(.+?)\s+(?:and|with|to)\s+(.+)",
+        r"(.+?)\s+(?:vs\.?|versus)\s+(.+)",
+    )
+    for pattern in patterns:
+        match = re.fullmatch(pattern, clean, re.I)
+        if match:
+            pair = tuple(part.strip(" ?.! ") for part in match.groups())
+            if all(pair) and pair[0].casefold() != pair[1].casefold():
+                return pair
+    return None
 
 
 def corpus_facets(subject: str, defining_passage: str) -> tuple[str, ...]:
@@ -147,6 +170,19 @@ def answer_covers_plan(plan: SearchPlan, claims: list[dict], evidence: list[dict
                     re.search(r"\b(?:blood|body fluids|bodily fluids|transmission|spread)\b", claim.get("text", ""), re.I)
                     for claim in accepted)
         return practical and route
+    if plan.comparison:
+        left, right = (subject.casefold() for subject in plan.comparison)
+        combined = " ".join(claim.get("text", "").casefold() for claim in accepted)
+        if left not in combined or right not in combined:
+            return False
+        return any(
+            left in claim.get("text", "").casefold()
+            and right in claim.get("text", "").casefold()
+            and re.search(r"\b(?:differ\w*|varies|vary|unlike|whereas|respectively|but|while)\b", claim.get("text", ""), re.I)
+            for claim in accepted
+        ) or (any(left in claim.get("text", "").casefold() for claim in accepted)
+              and any(right in claim.get("text", "").casefold() for claim in accepted)
+              and len(accepted) >= 2)
     return True
 
 
@@ -157,6 +193,15 @@ def classification_target(question: str) -> str | None:
 
 def make_search_plan(question: str) -> SearchPlan:
     clean = re.sub(r"\s+", " ", question).strip()
+    comparison = comparison_subjects(clean)
+    if comparison:
+        left, right = comparison
+        return SearchPlan(clean, f"{left} {right}", False, (
+            clean,
+            f"{left} {right} respectively differences whereas",
+            f"{left} definition what it is",
+            f"{right} definition what it is",
+        ), comparison=comparison)
     exposure = re.search(r"\b(?:can|could)\b.*\b(?:get|catch|contract|acquire)\b.+?\bby\s+(.+?)\??$", clean, re.I)
     if exposure:
         activity = exposure.group(1).strip(" ?.!")

@@ -81,8 +81,25 @@ def test_orchestrator_withholds_uncited_answer(monkeypatch):
     assert "No document and page citations" in result["issues"][0]
 
 
+def test_unrelated_comment_never_reaches_answer_model(monkeypatch):
+    class TopicStore(FakeStore):
+        def search(self, question, k=30):
+            return [{"source": "guide.pdf", "page": 2,
+                     "text": "Example disease can have a high case fatality rate.", "score": .9}]
+
+    monkeypatch.setattr(simple_rag, "VectorStore", TopicStore)
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "fingerprint", lambda self: "source-hash")
+    monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "read_and_chunk", lambda self: [])
+    monkeypatch.setattr(simple_rag, "compose_answer", lambda *args: (_ for _ in ()).throw(
+        AssertionError("Unrelated comment reached the answer model")))
+    result = SimpleAssistantRAG().ask(SimpleAssistantRequest("This is embarrassing"))
+    assert result["status"] == "out_of_scope"
+    assert result["chunks"] == []
+
+
 def test_orchestrator_uses_same_retrieval_path_for_different_questions(monkeypatch):
     seen = []
+    monkeypatch.setattr(simple_rag, "has_source_anchor", lambda *args: True)
 
     class RecordingStore(FakeStore):
         def search(self, question, k=30):
@@ -128,6 +145,7 @@ def test_orchestrator_shows_only_checked_claims(monkeypatch):
 
 
 def test_broad_question_does_not_show_unrelated_partial_facts(monkeypatch):
+    monkeypatch.setattr(simple_rag, "has_source_anchor", lambda *args: True)
     monkeypatch.setattr(simple_rag, "VectorStore", FakeStore)
     monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "fingerprint", lambda self: "source-hash")
     monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "read_and_chunk", lambda self: [
@@ -149,7 +167,7 @@ def test_broad_question_does_not_show_unrelated_partial_facts(monkeypatch):
     assert "Staffing is discussed" not in result["answer"]
 
 
-def test_classification_falls_back_to_exact_indexed_definition(monkeypatch):
+def test_classification_does_not_bypass_claim_check(monkeypatch):
     class DefinitionStore(FakeStore):
         def search(self, question, k=30):
             return [{"source": "risk-assessment.pdf", "page": 4,
@@ -169,10 +187,10 @@ def test_classification_falls_back_to_exact_indexed_definition(monkeypatch):
     monkeypatch.setattr(simple_rag, "check_claims", lambda *args: {
         "passed": False, "issues": ["Entity mismatch"], "claims": []
     })
+    monkeypatch.setattr(simple_rag, "repair_answer", lambda *args: "I cannot find this in the source documents.")
     result = SimpleAssistantRAG().ask(SimpleAssistantRequest("How does the risk assessment classify Example disease?"))
-    assert result["status"] == "machine_checked"
-    assert result["answer"] == "Example disease is a severe form of illness [risk-assessment.pdf, page 4]."
-    assert result["claim_checks"][0]["verdict"] == "source_text"
+    assert result["status"] == "review_required"
+    assert "pathogen" not in result["answer"]
 
 
 def test_classification_definition_precedes_risk_score_passage(monkeypatch):
@@ -235,6 +253,7 @@ def test_orchestrator_repairs_rejected_claim_once(monkeypatch):
 
 
 def test_orchestrator_repairs_missing_answer_aspect(monkeypatch):
+    monkeypatch.setattr(simple_rag, "has_source_anchor", lambda *args: True)
     monkeypatch.setattr(simple_rag, "VectorStore", FakeStore)
     monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "fingerprint", lambda self: "source-hash")
     monkeypatch.setattr(simple_rag.PDFDirectoryRetriever, "read_and_chunk", lambda self: [

@@ -22,6 +22,22 @@ def test_disease_is_not_labeled_as_its_causative_agent():
     assert not _is_category_error("Bundibugyo virus disease is caused by a pathogen.")
 
 
+def test_comparison_cannot_turn_shared_route_into_a_difference(monkeypatch):
+    evidence = [{"source": "guide.pdf", "page": 2,
+                 "text": "Example A and Example B both spread through contact with body fluids."}]
+    monkeypatch.setattr(claim_checker.ollama, "chat", lambda **kwargs: {
+        "message": {"content": json.dumps({"claims": [{
+            "id": 1, "verdict": "supported",
+            "quote": "Example A and Example B both spread through contact with body fluids.",
+            "reason": "", "relevant": True,
+        }]})}
+    })
+    result = check_claims("Example A and Example B have different transmission routes [guide.pdf, page 2].",
+                          evidence, "test", "How does Example A differ from Example B?")
+    assert not result["passed"]
+    assert "difference not stated" in result["issues"][0]
+
+
 EVIDENCE = [{"source": "guide.pdf", "page": 2, "text": "The recommended specimen for living patients is whole blood."}]
 
 
@@ -171,6 +187,9 @@ def test_unrelated_background_is_not_returned_as_answer(monkeypatch):
     assert [claim["passed"] for claim in result["claims"]] == [True, False]
     assert claim_checker._is_unrequested_statistic(
         "How should advice be adapted?", "The case fatality rate is 30%."
+    )
+    assert not claim_checker._is_unrequested_statistic(
+        "How deadly is Example disease?", "The case fatality rate is 30%."
     )
     assert not claim_checker._is_unrequested_statistic(
         "What is the case fatality rate?", "The case fatality rate is 30%."

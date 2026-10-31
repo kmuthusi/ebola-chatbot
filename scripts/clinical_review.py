@@ -149,7 +149,7 @@ def evaluate(cases: list[dict], data_dir: Path, model: str, limit: int | None, o
         source_present = not anchor or any(chunk.get("source") == anchor["source"] for chunk in response.get("chunks", []))
         behavior_ok = (
             response.get("status") == "machine_checked" if case["expected_behavior"] == "answer"
-            else response.get("status") in {"insufficient_context", "review_required"}
+            else response.get("status") in {"insufficient_context", "review_required", "out_of_scope"}
         )
         passed = behavior_ok and not missing and not prohibited and source_present
         results.append({

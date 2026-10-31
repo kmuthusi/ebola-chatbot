@@ -1,4 +1,5 @@
 import json
+import pytest
 
 import bounded_composer
 from bounded_composer import _make_prompt, _from_model_json
@@ -72,3 +73,15 @@ def test_composer_cites_each_sentence_from_a_model_claim():
     claim = {"text": "First fact. Second fact", "source_id": 1}
     answer = _from_model_json(json.dumps({"claims": [claim]}), EVIDENCE)
     assert answer.count("[diagnostic.pdf, page 4]") == 2
+
+
+def test_composer_rejects_truncated_claim_even_with_valid_source_id():
+    with pytest.raises(ValueError, match="unfinished claim"):
+        _from_model_json(json.dumps({"claims": [{"text": "One subject differs from another through a",
+                                                 "source_id": 1}]}), EVIDENCE)
+
+
+def test_comparison_prompt_rejects_shared_feature_as_a_difference():
+    prompt = _make_prompt("How does Example A differ from Example B?", EVIDENCE)
+    assert "A shared feature is not a difference" in prompt
+    assert "Example A" in prompt and "Example B" in prompt

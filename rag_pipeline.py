@@ -7,6 +7,34 @@ import re
 from typing import List, Dict, Any
 
 _STOPWORDS = {"a", "about", "and", "are", "can", "do", "does", "for", "how", "i", "in", "is", "of", "the", "there", "to", "what"}
+_QUERY_FILLER = {"about", "answer", "anything", "could", "describe", "details", "document", "documents",
+                 "explain", "from", "guidance", "guideline", "guidelines", "have", "into", "more",
+                 "please", "question", "should", "source", "sources", "tell", "that", "their",
+                 "them", "there", "these", "this", "those", "what", "when", "where", "which",
+                 "would", "your", "treatment", "symptoms", "spread", "deadly", "fatality",
+                 "mortality", "diagnosis", "diagnosed", "vaccine", "vaccines"}
+
+
+def has_source_anchor(question: str, candidates: List[Dict[str, Any]]) -> bool:
+    """Require a substantive question term in retrieved text or source titles."""
+    terms = {term for term in re.findall(r"[a-z]{4,}", question.casefold())
+             if term not in _QUERY_FILLER}
+    if not terms:
+        return True
+    for item in candidates:
+        content = f"{item.get('source', '')} {item.get('text', '')}".casefold()
+        if any(re.search(rf"\b{re.escape(term)}\b", content) for term in terms):
+            return True
+    return False
+
+
+def is_feedback_statement(message: str) -> bool:
+    """Keep statements about the conversation out of document retrieval."""
+    clean = re.sub(r"\s+", " ", message).strip().casefold()
+    if "?" in clean or re.match(r"^(?:how|what|why|when|where|which|who|can|could|does|do|is|are)\b", clean):
+        return False
+    return bool(re.match(r"^(?:this|that|it|your answer|the answer|your response|the response)\s+"
+                         r"(?:is|was|seems|looks|feels)\b", clean))
 
 
 def _words(text: str) -> set[str]:
@@ -45,6 +73,13 @@ def _simple_relevance_score(candidate: Dict[str, Any], terms: set[str], frequenc
     if terms & {"transmission", "spread", "contact", "body", "fluid"}:
         if re.search(r"\b(?:transmitted through|spread through|direct contact with (?:blood|body|bodily)|human-to-human transmission occurs)\b", content):
             directness += 0.24
+    if terms & {"deadly", "lethal", "fatality", "mortality"}:
+        if re.search(r"\b(?:case fatality rates?|mortality rates?)\b", content):
+            directness += 0.20
+        if re.search(r"\b(?:averaging|range from|can range)\b", content):
+            directness += 0.12
+        if re.search(r"\b(?:pooled|meta-analysis|study of)\b", content):
+            directness -= 0.10
     return s + page_bonus + lexical_bonus + guidance_bonus + directness - research_penalty
 
 def rerank_and_release(question: str, candidates: List[Dict[str, Any]], intent: str, max_passages: int = 5) -> Dict[str, Any]:

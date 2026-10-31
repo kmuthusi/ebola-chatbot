@@ -8,6 +8,7 @@ from difflib import SequenceMatcher
 import ollama
 
 from answer_formatting import format_answer_markdown
+from query_planning import comparison_subjects
 from verifier import CITATION_RE
 
 
@@ -44,6 +45,28 @@ def _quote_matches(quote: str, excerpts: list[str]) -> bool:
         source_span = matches[-1].b + matches[-1].size - matches[0].b if matches else 0
         if matched / len(normalized) >= 0.92 and source_span <= max(len(normalized) * 1.25, len(normalized) + 50):
             return True
+    return False
+
+
+def _unfinished_claim(claim: str) -> bool:
+    """Reject sentences that end in a connector or at the generation limit."""
+    plain = re.sub(r"[.!?]\s*$", "", claim).strip()
+    return bool(re.search(
+        r"(?:[,;:]|\b(?:a|an|the|and|or|but|to|of|through|with|via|from|including|because|by|for|in|on|as|at))\s*$",
+        plain, re.I,
+    )) or len(plain) >= 410
+
+
+def _comparison_contrast_supported(claim: str, excerpts: list[str], subjects: tuple[str, str] | None) -> bool:
+    """A claimed difference needs an explicit contrast in a cited passage."""
+    if not subjects or not re.search(r"\b(?:different|differ\w*|unlike|whereas|but also|more than|less than)\b", claim, re.I):
+        return True
+    left, right = (subject.casefold() for subject in subjects)
+    for excerpt in excerpts:
+        for sentence in re.split(r"(?<=[.!?])\s+", re.sub(r"\s+", " ", excerpt).casefold()):
+            if (left in sentence and right in sentence
+                    and re.search(r"\b(?:respectively|whereas|unlike|different|differ\w*|compared|versus)\b", sentence)):
+                return True
     return False
 
 
@@ -89,7 +112,7 @@ def _is_unrequested_statistic(question: str, claim: str) -> bool:
     """An unrelated metric aside is not part of a how/which answer."""
     return bool(
         re.match(r"\s*(?:how|which)\b", question, re.I)
-        and not re.search(r"\b(?:rate|fatality|mortality|percent|percentage|count|total|score|revenue|cost|how many)\b", question, re.I)
+        and not re.search(r"\b(?:rate|fatality|mortality|deadly|lethal|fatal|death|die|percent|percentage|count|total|score|revenue|cost|how many)\b", question, re.I)
         and re.search(r"\b(?:fatality|mortality|CFR|revenue|cost|rate|score)\b", claim, re.I)
     )
 
@@ -210,6 +233,7 @@ def check_claims(answer: str, evidence: list[dict], model: str, question: str = 
         return {"passed": False, "issues": ["No checkable factual claims found."], "claims": []}
 
     available = {}
+    comparison = comparison_subjects(question)
     for item in evidence:
         key = (item.get("source"), item.get("page"))
         available.setdefault(key, []).append(item.get("text", ""))
@@ -337,6 +361,8 @@ def check_claims(answer: str, evidence: list[dict], model: str, question: str = 
         missing_list_items = _unquoted_list_items(claim["text"], cited_text)
         exposure_route_supported = _exposure_route_supported(claim["text"], quote if isinstance(quote, str) else "")
         specific_exposure_supported = _specific_exposure_supported(question, claim["text"], quote if isinstance(quote, str) else "")
+        complete = not _unfinished_claim(claim["text"])
+        contrast_supported = _comparison_contrast_supported(claim["text"], excerpts, comparison)
         named_terms = {
             term for term in re.findall(r"\b(?:[A-Z][a-z]{3,}|[A-Z]{2,})\b", claim["text"])
             if term.casefold() in question_names
@@ -349,10 +375,14 @@ def check_claims(answer: str, evidence: list[dict], model: str, question: str = 
                 for other in question_names - {term.casefold()} for excerpt in excerpts
             )
         ]
-        claim["passed"] = claim["relevant"] and verdict == "supported" and quote_matches and not missing_terms and not missing_examples and not missing_list_items and exposure_route_supported and specific_exposure_supported and (not negative_claim or explicit_exclusion)
+        claim["passed"] = claim["relevant"] and verdict == "supported" and quote_matches and not missing_terms and not missing_examples and not missing_list_items and exposure_route_supported and specific_exposure_supported and (not negative_claim or explicit_exclusion) and complete and contrast_supported
         if not claim["relevant"]:
             continue
-        if verdict != "supported":
+        if not complete:
+            issues.append(f"Claim {claim['id']} ends mid-sentence.")
+        elif not contrast_supported:
+            issues.append(f"Claim {claim['id']} asserts a difference not stated in its cited passage.")
+        elif verdict != "supported":
             issues.append(f"Claim {claim['id']} was {verdict or 'not classified'} by the automated check.")
         elif not quote_matches:
             issues.append(f"Claim {claim['id']} has no matching verbatim source quote.")

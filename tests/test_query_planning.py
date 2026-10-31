@@ -1,7 +1,7 @@
-from query_planning import make_search_plan, corpus_facets, focus_on_matching_sources, answer_covers_plan, focus_excerpt, classification_target
-from rag_pipeline import rerank_and_release
+from query_planning import make_search_plan, corpus_facets, focus_on_matching_sources, answer_covers_plan, focus_excerpt, classification_target, comparison_subjects
+from rag_pipeline import has_source_anchor, is_feedback_statement, rerank_and_release
 from retrievers import _is_reference_page
-from evidence_selector import extractive_exposure_answer, compose_sourced_exposure_summary
+from evidence_selector import extractive_answer
 
 
 def test_broad_plan_covers_distinct_facets_without_topic_answers():
@@ -17,6 +17,31 @@ def test_focused_plan_expands_the_information_need():
     assert "diagnostic testing" in plan.queries[1]
     assert "specimen sample" in plan.queries[2]
     assert not make_search_plan("What are the symptoms?").broad
+
+
+def test_comparison_plan_searches_both_subjects_for_any_topic():
+    for question in ("How does Example A differ from Example B?",
+                     "What is the difference between Example A and Example B?",
+                     "Compare Example A and Example B"):
+        assert comparison_subjects(question) == ("Example A", "Example B")
+        plan = make_search_plan(question)
+        assert plan.comparison == ("Example A", "Example B")
+        assert any("Example A definition" in query for query in plan.queries)
+        assert any("Example B definition" in query for query in plan.queries)
+
+
+def test_extractive_fallback_copies_retrieved_sentences_without_topic_facts():
+    evidence = [
+        {"source": "activity.pdf", "page": 2,
+         "text": "During an Example outbreak, hugging was described as an unsafe greeting."},
+        {"source": "route.pdf", "page": 4,
+         "text": "Person-to-person spread occurs through direct contact with droplets."},
+    ]
+    answer = extractive_answer("Can I get Example by hugging?", evidence, (
+        "hugging unsafe greeting", "person-to-person spread direct contact"))
+    assert "hugging was described as an unsafe greeting [activity.pdf, page 2]" in answer
+    assert "spread occurs through direct contact with droplets [route.pdf, page 4]" in answer
+    assert "Ebola" not in answer
 
 
 def test_facets_follow_indexed_definition_for_any_subject():
@@ -81,27 +106,6 @@ def test_focused_excerpt_starts_at_sentence_boundary():
     assert focus_excerpt(text, "shaking hands unsafe practice", limit=100).startswith("When people")
 
 
-def test_exposure_fallback_copies_only_cited_source_words():
-    evidence = [
-        {"source": "activity.pdf", "page": 2, "text": "People described shaking hands as an unsafe greeting."},
-        {"source": "route.pdf", "page": 4, "text": "Transmission occurs through contact with blood and body fluids."},
-    ]
-    answer = extractive_exposure_answer("Can I get infection by shaking hands?", evidence)
-    assert "unsafe greeting [activity.pdf, page 2]" in answer
-    assert "Transmission occurs through contact with blood and body fluids" in answer
-
-
-def test_exposure_summary_uses_evidence_terms_for_any_topic():
-    evidence = [
-        {"source": "activity.pdf", "page": 2, "text": "During an Example outbreak, people cited an unsafe practice: greetings by touching, such as hugging."},
-        {"source": "route.pdf", "page": 4, "text": "Human-to-human transmission occurs via exposure to blood and other body fluids via contact."},
-    ]
-    answer = compose_sourced_exposure_summary("Can I get Example by hugging?", evidence)
-    assert "hugging, are described" in answer
-    assert "Ebola" not in answer
-    assert answer.count(".pdf, page") == 2
-
-
 def test_recommendation_outranks_research_agenda_for_care_query():
     candidates = [
         {"source": "a.pdf", "page": 1, "score": .65, "text": "Ebola treatment is an area of future research."},
@@ -114,3 +118,13 @@ def test_recommendation_outranks_research_agenda_for_care_query():
 def test_bibliography_page_is_excluded_even_without_references_heading():
     text = "33. Smith AB et al. Study of a disease treatment. doi: 10.1234/example\n34. Jones C et al. Another study. J Infect. 2020."
     assert _is_reference_page(text)
+
+
+def test_scope_requires_a_substantive_term_in_retrieved_sources():
+    hits = [{"source": "care.pdf", "page": 2,
+             "text": "Ebola disease can have a high case fatality rate."}]
+    assert has_source_anchor("How deadly is Ebola?", hits)
+    assert not has_source_anchor("This is embarrassing", hits)
+    assert not has_source_anchor("What are Xalec service options?", hits)
+    assert is_feedback_statement("This is embarrassing")
+    assert not is_feedback_statement("How is this different from Marburg?")

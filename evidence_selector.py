@@ -79,72 +79,31 @@ def select_evidence(question: str, candidates: list[dict], model: str, limit: in
         return pool[:limit]
 
 
-def extractive_exposure_answer(question: str, evidence: list[dict]) -> str | None:
-    """Use exact source sentences when an exposure inference cannot be checked."""
-    activity_match = re.search(r"\bby\s+(.+?)\??$", question, re.I)
-    if not activity_match:
-        return None
-    activity = activity_match.group(1).strip(" ?.!").casefold()
-    if not activity:
-        return None
-    activity_result = None
-    route_result = None
-    for item in evidence:
-        text = re.sub(r"\s+", " ", item.get("text", "")).strip()
-        for sentence in re.split(r"(?<=[.!?])\s+", text):
-            lower = sentence.casefold()
-            if activity in lower and re.search(r"\b(?:unsafe|avoid|discouraged)\b", lower):
-                activity_result = activity_result or (sentence.strip(), item)
-            if re.search(r"\b(?:transmission occurs|spreads? through|transmitted through)\b", lower) and re.search(
-                r"\b(?:blood|body fluids|bodily fluids)\b", lower
-            ):
-                route = re.search(r"\b(?:transmission occurs|spreads? through|transmitted through)\b", sentence, re.I)
-                if route:
-                    part = sentence[route.start():]
-                    endings = list(re.finditer(r"\b(?:blood|body fluids|bodily fluids)\b", part[:350], re.I))
-                    if endings:
-                        part = part[:endings[-1].end()]
-                    route_result = route_result or (part.strip(), item)
-    if not activity_result or not route_result:
+def extractive_answer(question: str, evidence: list[dict], facet_queries: tuple[str, ...]) -> str | None:
+    """Copy relevant source sentences when the answer model cannot ground a draft.
+
+    This fallback contains no topic facts or answer templates. Every returned
+    sentence comes from a retrieved passage and is checked by the caller.
+    """
+    if not evidence or not facet_queries:
         return None
     lines = []
-    for sentence, item in (activity_result, route_result):
-        # The words are copied from the indexed source excerpt; only whitespace
-        # and citation placement change here.
+    used = set()
+    stop = {"about", "after", "before", "could", "does", "from", "have", "into",
+            "other", "their", "there", "these", "those", "through", "which", "would"}
+    for query, item in zip(facet_queries, evidence):
+        terms = {word for word in re.findall(r"[a-z]{4,}", query.casefold()) if word not in stop}
+        sentences = re.split(r"(?<=[.!?])\s+", re.sub(r"\s+", " ", item.get("text", "")).strip())
+        ranked = []
+        for sentence in sentences:
+            sentence = sentence.strip()
+            words = set(re.findall(r"[a-z]{4,}", sentence.casefold()))
+            overlap = len(terms & words)
+            if 35 <= len(sentence) <= 500 and overlap >= 2 and (item.get("source"), item.get("page"), sentence) not in used:
+                ranked.append((overlap, -len(sentence), sentence))
+        if not ranked:
+            return None
+        sentence = max(ranked)[2]
+        used.add((item.get("source"), item.get("page"), sentence))
         lines.append(f"{sentence.rstrip('. ')} [{item['source']}, page {item['page']}].")
     return "\n\n".join(lines)
-
-
-def compose_sourced_exposure_summary(question: str, evidence: list[dict]) -> str | None:
-    """Paraphrase only source phrases that match a known, checkable pattern.
-
-    This contains no disease answer. The caller still runs the independent
-    claim and quotation check before showing the summary.
-    """
-    activity_match = re.search(r"\bby\s+(.+?)\??$", question, re.I)
-    if not activity_match:
-        return None
-    activity = activity_match.group(1).strip(" ?.!")
-    if not activity:
-        return None
-    first = None
-    second = None
-    for item in evidence:
-        source_text = re.sub(r"\s+", " ", item.get("text", ""))
-        greeting = re.search(rf"\bgreetings? by touching, such as {re.escape(activity)}\b", source_text, re.I)
-        unsafe = re.search(r"\bunsafe practice\b", source_text, re.I)
-        context = re.search(r"\bduring an? ([A-Za-z ]{4,65} outbreak)\b", source_text, re.I)
-        if greeting and unsafe and context and abs(greeting.start() - unsafe.start()) < 260:
-            first = first or (
-                f"During an {context.group(1)}, {greeting.group(0)}, are described as an unsafe practice",
-                item,
-            )
-        route = re.search(r"\btransmission occurs via exposure to (blood and other body fluids) via contact\b", source_text, re.I)
-        if route:
-            second = second or (f"Person-to-person transmission occurs through contact with {route.group(1)}", item)
-    if not first or not second:
-        return None
-    return "\n\n".join(
-        f"{claim} [{item['source']}, page {item['page']}]."
-        for claim, item in (first, second)
-    )
